@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/webflow
+        http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+
+	<secured attributes="ROLE_USER"></secured>
+	
+	<view-state id="orders">
+		<transition on="newOrder" to="newOrder" />
+		<transition on="continue" to="continueOrder" />
+		<transition on="form1" to="form1" />
+		<transition on="form2" to="form2" />
+		<transition on="form3" to="form3" />
+	</view-state>
+
+	<view-state id="newOrder">
+		<transition on="back" to="orders" />
+		<transition on="continue" to="continueOrder" />
+		<transition on="form1" to="form1" />
+		<transition on="form2" to="form2" />
+		<transition on="form3" to="form3" />
+	</view-state>
+	
+	<view-state id="continueOrder">
+		<transition on="back" to="orders" />
+		<transition on="form2" to="form2" />
+		<transition on="form3" to="form3" />
+	</view-state>
+
+	<view-state id="form1">
+		<secured attributes="ROLE_ADMIN"></secured>
+	</view-state>
+	<view-state id="form2" />
+	<view-state id="form3" />
+
+</flow>

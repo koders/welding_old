@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--suppress WebflowSetupInspection -->
+<flow xmlns="http://www.springframework.org/schema/webflow"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/webflow
+        http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+
+	<secured attributes="ROLE_ADMIN"></secured>
+	
+	<view-state id="administration">
+		<transition on="users" to="users" />
+		<transition on="companies" to="companies" />
+		<transition on="terms" to="terms" />
+		<transition on="products" to="products" />
+		<transition on="countries" to="countries" />
+		<transition on="persons" to="persons" />
+		<transition on="categories" to="categories" />
+		<transition on="stock" to="stock" />
+		<transition on="productModels" to="productModels" />
+		<transition on="form1" to="form1" />
+	</view-state>
+	
+	<view-state id="users">
+		<transition on="back" to="administration" />
+	</view-state>
+	
+	<view-state id="companies">
+		<transition on="back" to="administration" />
+	</view-state>
+
+	<view-state id="products">
+		<transition on="back" to="administration" />
+	</view-state>
+	
+	<view-state id="terms">
+		<transition on="back" to="administration" />
+	</view-state>
+	
+	<view-state id="countries">
+		<transition on="back" to="administration" />
+	</view-state>
+	
+	<view-state id="persons">
+		<transition on="back" to="administration" />
+	</view-state>
+
+    <view-state id="stock">
+        <transition on="back" to="administration" />
+    </view-state>
+
+    <view-state id="categories">
+        <transition on="back" to="administration" />
+        <transition on="categories_subCategories" to="categories_subCategories" />
+    </view-state>
+
+    <view-state id="categories_subCategories">
+        <transition on="back" to="administration" />
+        <transition on="categories" to="categories" />
+        <transition on="categories_subCategories2" to="categories_subCategories2" />
+        <transition on="products" to="categories_products" />
+    </view-state>
+
+    <view-state id="categories_subCategories2">
+        <transition on="back" to="administration" />
+        <transition on="categories" to="categories" />
+        <transition on="categories_subCategories" to="categories_subCategories" />
+        <transition on="products" to="categories_products" />
+    </view-state>
+
+    <view-state id="categories_products">
+        <transition on="back" to="administration" />
+        <transition on="categories" to="categories" />
+        <transition on="categories_subCategories" to="categories_subCategories" />
+        <transition on="categories_subCategories2" to="categories_subCategories2" />
+    </view-state>
+
+	<view-state id="productModels">
+		<transition on="back" to="administration" />
+		<transition on="productModels_productSizes" to="productModels_productSizes" />
+	</view-state>
+
+	<view-state id="productModels_productSizes">
+		<transition on="back" to="administration" />
+		<transition on="productModels" to="productModels" />
+		<transition on="productModels_productMaterials" to="productModels_productMaterials" />
+	</view-state>
+
+	<view-state id="productModels_productMaterials">
+		<transition on="back" to="administration" />
+		<transition on="productModels" to="productModels" />
+		<transition on="productModels_productSizes" to="productModels_productSizes" />
+		<transition on="productModels_products" to="productModels_products" />
+	</view-state>
+
+	<view-state id="productModels_products">
+		<transition on="back" to="administration" />
+		<transition on="productModels" to="productModels" />
+		<transition on="productModels_productSizes" to="productModels_productSizes" />
+		<transition on="productModels_productMaterials" to="productModels_productMaterials" />
+	</view-state>
+	
+	<view-state id="form1">
+		<transition on="back" to="administration" />
+	</view-state>
+
+</flow>

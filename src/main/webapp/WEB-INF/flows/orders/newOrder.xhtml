@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/general2.xhtml">
+        
+        <ui:define name="title"><h:outputText value="Order" /></ui:define>
+        
+        <ui:define name="content">
+        <h:form id="form">
+
+			<p:panel id="panel" style="width:1000px; margin: 0px auto; border: 0px;">
+				<h1 style="text-align: center;">Order Creation</h1>
+				<hr />
+					<p:commandButton value="Back" action="back" styleClass="btn btn-danger"/>
+				<p:panelGrid columns="2" style="width: 750px; margin:10px auto; text-align: center;" styleClass="newOrder noBorder noBackground">
+					
+					<h:outputText value=" "/>
+				 	<h2>General Info</h2>
+				 	<hr />
+					
+					<h:outputText value="Order Confirmation Number:"/>
+				 	<p:inputText value="#{orderBean.confirmationNumber}"/>
+				
+					<h:outputText value="Company:"/>
+				 	<p:panelGrid columns="2" styleClass="noBorder noBackground" style="width:450px; margin-left:20px;">
+						<p:autoComplete queryDelay="0" completeMethod="#{orderBean.companyComplete}" value="#{orderBean.companySelected.name}">
+					 		<p:ajax event="itemSelect" listener="#{orderBean.selectCompany}" update="onr"/>
+					 		<p:ajax event="focus" listener="#{invoiceBean.setC1(true)}" update="c2,c1"/>
+			                <p:ajax event="blur" listener="#{invoiceBean.setC1(false)}" />
+					 	</p:autoComplete>
+		            	<p:panel id="c1" styleClass="noBorder noBackground companyLink" style="position:absolute">
+		            		<p:commandLink value="Add Company" rendered="#{invoiceBean.c1}" actionListener="#{administrationBean.clearFields}" onsuccess="newDialog.show()" /> 
+	            		</p:panel>
+	            	</p:panelGrid>
+				 	
+				 	<h:outputText value="Purchase Order Number:"/>
+				 	<p:inputText id="onr" value="#{orderBean.companySelected.onr}" />
+				 	
+				 	<h:outputText value="Marking:"/>
+				 	<p:inputText value="#{orderBean.currentOrder.orderData.marking}" />
+				 	
+				 	<h:outputText value="Order Date:"/>
+				 	<p:inputText value="#{orderBean.currentOrder.orderData.odate}" />
+				 	
+				 	<h:outputText value="Currency:"/>
+				 	<p:inputText id="currency" value="#{orderBean.currentOrder.orderData.currency}" />
+				 	
+				 	<h:outputText value="Specification:"/>
+				 	<p:inputTextarea value="#{orderBean.currentOrder.orderData.spec}" />
+				 	
+				 	<h:outputText value=" "/>
+				 	<h2>Delivery Info</h2>
+				 	<hr />
+				 	
+				 	<h:outputText value="Planned Delivery Date:"/>
+				 	<p:inputText value="#{orderBean.currentOrder.orderData.ddate}" />
+				 	
+				 	<h:outputText value="Actual Delivery Date:"/>
+				 	<p:inputText value="#{orderBean.currentOrder.orderData.addate}" />
+				 	
+					<h:outputText value="Delivery adddress:"/>
+					<p:panelGrid columns="2" styleClass="noBorder noBackground" style="width:450px; margin-left: 20px;">
+					 	<p:autoComplete value="#{orderBean.deliveryAddress}" styleClass="companyButtonListener"
+		                        completeMethod="#{orderBean.completeAddress}" queryDelay="0" 
+		                        var="i" itemLabel="#{i.name}" itemValue="#{i}" converter="companyConverter" forceSelection="true" size="30" effect="fade">  
+		  					<p:ajax event="itemSelect" listener="#{orderBean.selectDeliveryAddress}"/>
+			                <f:facet name="itemtip">  
+			                    <h:panelGrid  columns="1" styleClass="noBorder" cellpadding="2" width="250">  
+			                        <h:outputText value="#{i.name}" style="font-weight: bold;" />  
+			                        <h:outputText escape="false" value="#{invoiceBean.replaceNewlines(i.address)}" />  
+			                    </h:panelGrid>  
+			                </f:facet>  
+			                <p:ajax event="focus" listener="#{invoiceBean.setC2(true)}" update="c2,c1"/>
+			                <p:ajax event="blur" listener="#{invoiceBean.setC2(false)}" />
+		            	</p:autoComplete>
+		            	<p:panel id="c2" styleClass="noBorder noBackground companyLink" style="position:absolute">
+		            		<p:commandLink value="Add Company" rendered="#{invoiceBean.c2}" onsuccess="newDialog.show()" actionListener="#{administrationBean.clearFields}" /> 
+	            		</p:panel>
+	            	</p:panelGrid>
+					
+				 	<h:outputText value="Delivery Terms:"/>
+				 	<p:autoComplete queryDelay="0" completeMethod="#{administrationBean.completeTerms}" value="#{orderBean.currentOrder.orderData.dterms}" />
+				 	
+				 	
+				 	<h:outputText value=" "/>
+				 	<h2>Contact Info</h2>
+				 	<hr />
+				 	
+				 	<h:outputText value="Contact Person:"/>
+				 	<p:autoComplete value="#{orderBean.currentOrder.orderData.cperson}" completeMethod="#{administrationBean.completePerson}" queryDelay="0" />
+				 	
+				 	<h:outputText value="Phone:"/>
+				 	<p:inputText value="#{orderBean.currentOrder.orderData.cphone}" />
+				 	
+				 	<h:outputText value="Fax:"/>
+				 	<p:inputText value="#{orderBean.currentOrder.orderData.cfax}" />
+				 	
+				 	<h:outputText value="E-Mail:"/>
+				 	<p:inputText value="#{orderBean.currentOrder.orderData.cemail}" />
+				 	
+				</p:panelGrid>
+		
+		
+				<h2 style="text-align: center;">Products</h2>
+				<hr />
+		
+				<p:commandButton value="Add Product" actionListener="#{orderBean.addProduct}" update="table" styleClass="btn btn-success"/>
+				<p:commandButton value="Product List" onclick="productDialog.show()" style="float: right;" styleClass="btn btn-info" />
+				<p:dataTable id="table" value="#{orderBean.products}" var="product" emptyMessage="Please add products" editable="true" 
+								editMode="cell" style="width: 950px; margin: 10px auto;" styleClass="fixedTable cellInput">
+					<p:ajax event="cellEdit" listener="#{orderBean.editPrice}" update="totalPrice, :form:totalMoney"/>
+					
+					
+					<f:facet name="header">
+						Products
+					</f:facet>
+					<p:column width="50">
+						<p:commandButton icon="ui-icon-close" actionListener="#{orderBean.removeProduct(product)}" update="table, :form:totalMoney" style="width:30px; height: 30px;"/>
+					</p:column>
+					<p:column headerText="Product Number" width="150">
+						<p:cellEditor>
+							<f:facet name="output"><h:outputText value="#{product.pno}" /></f:facet>
+							<f:facet name="input"><p:inputText id="pno" value="#{product.pno}">
+								<p:watermark for="pno" value="Product nr." />  
+								<p:ajax event="keyup" update="desc, desc1" listener="#{orderBean.checkProduct(product)}"/>
+	                    				</p:inputText></f:facet>  
+			            </p:cellEditor>
+		            </p:column>
+					<p:column headerText="Description" width="400">
+						<p:cellEditor>
+							<f:facet name="output"><h:outputText id="desc" value="#{product.desc}" /></f:facet>
+							<f:facet name="input">
+								<p:inputText id="desc1" value="#{product.desc}">
+								</p:inputText>
+							</f:facet>  
+			            </p:cellEditor>
+					</p:column>
+					<p:column headerText="Pcs"  width="70">
+						<p:cellEditor>
+							<f:facet name="output"><h:outputText value="#{product.pcs}" /></f:facet>
+							<f:facet name="input"><p:inputText value="#{product.pcs}" onkeypress="if(event.keyCode == 13)this.blur()">
+								<p:ajax event="blur" update="totalPrice"/>
+							</p:inputText></f:facet>  
+			            </p:cellEditor>
+					</p:column>
+					<p:column headerText="Price"  width="70">
+						<p:cellEditor>
+							<f:facet name="output"><h:outputText value="#{product.price}" /></f:facet>
+							<f:facet name="input"><p:inputText value="#{product.price}" onkeypress="if(event.keyCode == 13)this.blur()">
+								<p:ajax event="blur" update="totalPrice"/>
+							</p:inputText></f:facet> 
+			            </p:cellEditor>
+					</p:column>
+					<p:column headerText="Total Price" width="100" styleClass="notEditable" >
+						<h:outputText id="totalPrice" value="#{orderBean.calculatePrice(product)}" />
+					</p:column>
+					
+				</p:dataTable>
+				
+				<p:panelGrid id="totalMoney" columns="2" style="margin: 20px 0px 30px 800px; font-weight: bold;" styleClass="noBorder">
+					<h:outputText value="Total:" />
+					<h:outputText value="#{invoiceBean.setScale(orderBean.totalProductPrice, 2)}" />
+				</p:panelGrid>
+				
+				<p:commandButton value="Back" action="back" rendered="#{orderBean.currentOrder.t > 0}" styleClass="btn btn-danger" />
+				<p:commandButton value="Back" action="back" rendered="#{orderBean.currentOrder.t == 0}" styleClass="btn btn-danger"/>
+				<p:commandButton value="Save" actionListener="#{orderBean.save}" rendered="#{orderBean.currentOrder.t == 0 and orderBean.edit == false}" styleClass="btn btn-primary"/>
+				<p:commandButton value="Save" actionListener="#{orderBean.saveEdited}" rendered="#{orderBean.currentOrder.t == 0 and orderBean.edit == true}" styleClass="btn btn-primary">
+					
+				</p:commandButton>
+				<p:commandButton value="To Production" action="continue" rendered="#{orderBean.currentOrder.t == 0 and orderBean.edit == false}" styleClass="btn btn-success">
+					<f:actionListener binding="#{orderBean.nextPhase()}" />
+					<f:actionListener binding="#{orderBean.save()}" />
+				</p:commandButton>
+				<p:commandButton value="To Production" action="continue" rendered="#{orderBean.currentOrder.t == 0 and orderBean.edit == true}" styleClass="btn btn-success">
+					<f:setPropertyActionListener target="#{orderBean.edit}" value="#{false}" />
+					<f:actionListener binding="#{orderBean.nextPhase()}" />
+					<f:actionListener binding="#{orderBean.saveEdited()}" />
+				</p:commandButton>
+				
+				<p:commandButton value="Form 3" actionListener="#{orderBean.setCurrentOrderForSave}" icon="ui-icon-search" style="float:right" action="form3" styleClass="btn btn-default"/>
+				<p:commandButton value="Form 2" actionListener="#{orderBean.setCurrentOrderForSave}" icon="ui-icon-search" style="float:right" action="form2" styleClass="btn btn-default"/>
+				<p:commandButton value="Form 1" actionListener="#{orderBean.setCurrentOrderForSave}" icon="ui-icon-search" style="float:right" action="form1" styleClass="btn btn-default"/>
+			</p:panel>
+			
+			
+			
+			<!-- DIALOG PRODUCTS -->
+			
+			
+			
+			<p:dialog widgetVar="productDialog" dynamic="true" modal="false" header="Products" width="900" showEffect="fade" hideEffect="fade">
+				<p:dataTable var="p" value="#{administrationBean.products}" scrollable="true" scrollHeight="500" >
+				
+					<p:column headerText="Product Number" width="100">  
+			            <h:outputText value="#{p.pno}" />  
+			        </p:column> 
+			        
+			        <p:column headerText="Description" width="700">  
+			            <h:outputText value="#{p.desc}" />  
+			        </p:column>
+			        
+				</p:dataTable>
+			</p:dialog>
+			
+			
+			
+			
+			
+			
+			<!-- DIALOG NEW COMPANY -->
+			
+			
+			<p:dialog widgetVar="newDialog" modal="true" header="Create Company" resizable="false" dynamic="true">
+				<p:panelGrid columns="2">
+					<h:outputText value="Company Name"/>
+					<p:inputText value="#{administrationBean.company.name}" />
+					<h:outputText value="Last Order Number"/>
+					<p:inputText value="#{administrationBean.company.onr}" />
+					<h:outputText value="Address"/>
+					<p:inputTextarea value="#{administrationBean.company.address}" cols="50" rows="6"/>
+					<h:outputText value="Properties"/>
+					<p:inputTextarea value="#{administrationBean.company.properties}" cols="50" rows="6"/>
+				</p:panelGrid>
+				<p:commandButton value="Save" actionListener="#{administrationBean.saveCompany}" onclick="newDialog.hide()" update="form"/>
+				<p:commandButton value="Calcel" onclick="newDialog.hide()" update="form" />
+			</p:dialog>
+			
+			
+			
+			
+        </h:form>
+        </ui:define>
+        
+</ui:composition>

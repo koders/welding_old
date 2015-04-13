@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/forms.xhtml"
+                >
+        
+                <ui:define name="title"><h:outputText value="New Order" /></ui:define>
+        
+        <ui:define name="content">
+        <h:form id="form" styleClass="form" style="width: 20cm; margin: 0px auto; min-height: 22cm; position: relative;">
+        
+        
+			<table border="1" cellpadding="2" cellspacing="2" style="width: 100%; border-collapse: collapse;">
+				<tbody>
+					<tr>
+						<td>
+							<table border="0" cellpadding="1" cellspacing="1" style="width: 100%;">
+								<tbody>
+									<tr>
+									</tr>
+									<tr>
+										<td style="width: 25%;">
+											<span style="font-size: 48px;"><p:graphicImage url="/images/logo-small.gif" width="100px"/><br />
+											</span></td>
+										<td>
+											<p style="text-align: center;">
+												<span style="font-size: 16px;"><strong>RAŽO&Scaron;ANAS UZDEVUMS<br />
+												</strong></span></p>
+											<p style="text-align: center;">
+												<span style="font-size: 16px;"><strong>PRODUCTION ORDER<br />
+												</strong></span></p>
+										</td>
+										<td style="width: 25%;" valign="top">
+											Dok.Nr.: SW 2034 L+E<br />
+											Versija: A<br />
+											Apstiprinājis:GS<br />
+											Datums:11.09.09.<br />
+											Lapa:1 no 1</td>
+									</tr>
+								</tbody>
+							</table>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<table border="0" cellpadding="1" cellspacing="1" style="width: 80%;">
+								<tbody>
+									<tr>
+										<td style="width: 150px;">
+											Company:</td>
+										<td style="text-align: center;">
+											#{orderBean.currentOrder.orderData.company}</td>
+									</tr>
+									<tr>
+										<td>
+											Purchase order No.</td>
+										<td style="text-align: center;">
+											#{orderBean.currentOrder.orderData.ordernr}</td>
+									</tr>
+									<tr>
+										<td>
+											Order Confirmation No.</td>
+										<td style="text-align: center;">
+											#{orderBean.currentOrder.orderData.ocnr}</td>
+									</tr>
+									<tr>
+										<td>
+											Order Date:</td>
+										<td style="text-align: center;">
+											#{orderBean.currentOrder.orderData.odate}</td>
+									</tr>
+									<tr>
+										<td>
+											Delivery date:</td>
+										<td style="text-align: center;">
+											#{orderBean.currentOrder.orderData.ddate}</td>
+									</tr>
+								</tbody>
+							</table>
+							<br />
+								
+								<p:dataTable var="p" value="#{orderBean.currentOrder.orderData.p}" style="border: 1px;" styleClass="formTable">
+									<p:column headerText="Product No.">
+										#{p.pno}
+									</p:column>
+									<p:column headerText="Desc." styleClass="wrap">
+										#{p.desc}
+									</p:column>
+									<p:column headerText="Pcs.">
+										#{p.pcs}
+									</p:column>
+								</p:dataTable>
+								
+							</td>
+					</tr>
+					<tr>
+						<td>
+							Specifikācija/Specification:<br />
+							#{orderBean.currentOrder.orderData.spec}<br />
+							#{orderBean.currentOrder.orderData.spec2}<br />
+							<br />
+							<br />
+							Paraksts / Signature &nbsp; ........................................................................</td>
+					</tr>
+				</tbody>
+			</table>
+			<p>
+				&nbsp;</p>
+			<table border="1" cellpadding="2" cellspacing="2" style="width: 100%; border-collapse: collapse;">
+			</table>
+        </h:form>
+        </ui:define>
+        
+</ui:composition>

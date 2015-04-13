@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/webflow
+        http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+
+	<secured attributes="ROLE_ADMIN"></secured>
+	
+	<view-state id="invoices">
+		<transition on="newInvoice"  to="newInvoice"/>
+		<transition on="proformaInvoice"  to="proformaInvoice"/>
+		<transition on="proformaInvoice2"  to="proformaInvoice2"/>
+		<transition on="invoice"  to="invoice"/>
+		<transition on="packingList"  to="packingList"/>
+		<transition on="report"  to="report"/>
+		<transition on="stockInvoice"  to="stockInvoice"/>
+	</view-state>
+	
+	<view-state id="newInvoice">
+		<transition on="back"  to="invoices"/>
+		<transition on="proformaInvoice"  to="proformaInvoice"/>
+	</view-state>
+
+	<view-state id="proformaInvoice" />
+	<view-state id="proformaInvoice2" />
+	<view-state id="invoice" popup="true"/>
+	<view-state id="packingList" />
+	<view-state id="report" />
+	<view-state id="stockInvoice" />
+
+</flow>

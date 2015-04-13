@@ -1,0 +1,465 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/general2.xhtml">
+        
+        <ui:define name="title"><h:outputText value="New Invoice" /></ui:define>
+        
+        <ui:define name="content">
+        <h:form id="form">
+
+        	
+        	
+        	
+        	<!-- MAIN PANEL -->
+        	
+        	
+        	
+        	
+			<p:panel id="mainPanel" style="width:1000px; margin: 0px auto; border: 0px;">
+				<h1 style="text-align:center;">Invoice Creation</h1>
+				<hr />
+					<p:commandButton value="Back" action="back" styleClass="btn btn-danger"/>
+				<h2 style="text-align: center;">General Info</h2>
+				<hr style="width: 700px; text-align:center;" />
+			<p:panelGrid id="mainPanelGrid" columns="2" style="width: 700px; margin:10px auto;" styleClass="newInvoice noBorder noBackground">
+				
+				<h:outputText value="Invoice Number:" />
+				<p:inputText value="#{invoiceBean.invoice.number}">
+					<p:ajax event="change" update="invoiceNumber" />
+				</p:inputText>
+				
+				<h:outputText value="Year:" />
+				<p:inputText value="#{invoiceBean.invoice.year}">
+					<p:ajax event="change" update="invoiceNumber" />
+				</p:inputText>
+				
+				<h:outputText value="Full Invoice Number:" />
+            	<h:outputText id="invoiceNumber" value="SW #{invoiceBean.invoice.number} / #{invoiceBean.invoice.year}" />
+				
+				<h:outputText value="Group:" />
+				<p:selectOneMenu id="group" value="#{invoiceBean.invoice.country}" effect="fade" effectSpeed="0" style="width: 200px;">
+					<f:selectItem itemLabel="Select Group" itemValue="" />  
+               		<f:selectItems value="#{invoiceBean.countriesString}" />  
+				</p:selectOneMenu>
+				
+				<h:outputText value="Seller:" />
+				<p:panelGrid columns="2" styleClass="noBorder noBackground" style="width:450px; margin-left: -10px;">
+					<p:autoComplete value="#{invoiceBean.invoice.sellerInfo}" styleClass="companyButtonListener"
+	                        completeMethod="#{invoiceBean.completeCompany}" queryDelay="0" 
+	                        var="i" itemLabel="#{i.name}" itemValue="#{i}" converter="companyConverter" forceSelection="true" size="30" effect="fade">  
+	  				
+		                <f:facet name="itemtip">  
+		                    <h:panelGrid  columns="1" styleClass="noBorder" cellpadding="2" width="250">  
+		                        <h:outputText value="#{i.name}" style="font-weight: bold;" />  
+		                        <h:outputText escape="false" value="#{invoiceBean.replaceNewlines(i.address)}" />  
+		                    </h:panelGrid>  
+		                </f:facet>  
+		                <p:ajax event="focus" listener="#{invoiceBean.setC1(true)}" update="c1, c2, c3" />
+		                <p:ajax event="blur" listener="#{invoiceBean.setC1(false)}" />
+	            	</p:autoComplete>
+	            	<p:panel id="c1" styleClass="noBorder noBackground companyLink" style="position: absolute;">
+	            		<p:commandLink value="Add Company" rendered="#{invoiceBean.c1}" onsuccess="newDialog.show()" actionListener="#{administrationBean.clearFields}" /> 
+            		</p:panel>
+            	</p:panelGrid>
+            	
+				<h:outputText value="Buyer:" />
+            	<p:panelGrid columns="2" styleClass="noBorder noBackground" style="width:450px; margin-left: -10px;">
+				<p:autoComplete value="#{invoiceBean.invoice.buyerInfo}"   
+                        id="buyer" completeMethod="#{invoiceBean.completeCompany}" queryDelay="0"  
+                        var="i" itemLabel="#{i.name}" itemValue="#{i}" converter="companyConverter" forceSelection="true" size="30" effect="fade">  
+  				
+  				<!--<p:ajax event="itemSelect" listener="#{invoiceBean.companySelected}"/>-->
+  				
+	                <f:facet name="itemtip">  
+	                    <h:panelGrid  columns="1" styleClass="noBorder" cellpadding="2" width="250">  
+	                        <h:outputText value="#{i.name}" style="font-weight: bold;" />  
+	                        <h:outputText escape="false" value="#{invoiceBean.replaceNewlines(i.address)}" />  
+	                    </h:panelGrid>  
+	                </f:facet>  
+  					<p:ajax event="focus" listener="#{invoiceBean.setC2(true)}" update="c1, c2, c3" />
+		            <p:ajax event="blur" listener="#{invoiceBean.setC2(false)}" />
+            	</p:autoComplete> 
+            	<p:panel id="c2" styleClass="noBorder noBackground companyLink" style="position: absolute;">
+	            		<p:commandLink value="Add Company" rendered="#{invoiceBean.c2}" onsuccess="newDialog.show()" actionListener="#{administrationBean.clearFields}" /> 
+            		</p:panel>
+            	</p:panelGrid>
+            	
+            	<h:outputText value="Contact Person:" />
+            	<p:autoComplete value="#{invoiceBean.invoice.contactPerson}" completeMethod="#{administrationBean.completePerson}" queryDelay="0" />
+            	
+            	<h:outputText value="Contact Tel.:" />
+            	<p:inputText value="#{invoiceBean.invoice.contactTel}" />
+            	
+            	<h:outputText value="Creation Date:" />
+            	<p:inputText value="#{invoiceBean.invoice.creationDate}" />
+            	
+            	<h:outputText value="Delivery Date:" />
+            	<p:inputText value="#{invoiceBean.invoice.deliveryDate}" />
+
+            	<h:outputText value="Terms of Delivery:" />
+				<p:autoComplete value="#{invoiceBean.invoice.termsDelivery}" completeMethod="#{administrationBean.completeTerms}" />
+            	
+            	<h:outputText value="Terms of Payment:" />
+				<p:selectOneMenu value="#{invoiceBean.invoice.termsPayment}" >
+					<f:selectItem itemLabel="DATE OF INVOICE + 30 DAYS" itemValue="DATE OF INVOICE + 30 DAYS" />
+					<f:selectItem itemLabel="DATE OF INVOICE" itemValue="DATE OF INVOICE" />
+				</p:selectOneMenu>
+            	
+            	<h:outputText value="Due Date:" />
+            	<p:inputText value="#{invoiceBean.invoice.dueDate}" />
+            	
+            	<h:outputText value="HS CODE:" />
+            	<p:inputText value="#{invoiceBean.invoice.hsCode}" />
+            	
+            	<h:outputText value="VAT:" />
+				<p:panelGrid columns="1" styleClass="noBackground text-left" style="margin-left: -10px; text-align:left !important;">
+					<p:selectOneMenu id="vat" value="#{invoiceBean.invoice.pvn}">
+						<f:selectItem itemLabel="Select One" itemValue="" />
+						<f:selectItem itemLabel="EU" itemValue="(P.S. 0% PVN likme tiek piemērota pēc Direktīvas 2006/112/EK 138. panta 1.punkta) \n Article 138 (1) of the EU VAT Directive (2006/112/EC)" />
+						<f:selectItem itemLabel="Other Countries" itemValue="(P.S. 0% PVN likme tiek piemērota pēc Direktīvas 2006/112/EK 146. panta 1.punkta a apakšpunkta) \n Article 146 (1) (a) of the EU VAT Directive (2006/112/EC)" />
+						<f:selectItem itemLabel="Specify" itemValue="Specify" />
+						<p:ajax update="specify1" />
+					</p:selectOneMenu>
+					<p:panelGrid columns="1" id="specify1" styleClass="noBorder noBackground" style="margin-left: -10px;">
+						<p:inputTextarea id="specify" rendered="#{invoiceBean.invoice.pvn == 'Specify'}" cols="50" value="#{invoiceBean.invoice.pvnSpecify}" title="Specify VAT Directive" />
+					</p:panelGrid>
+				</p:panelGrid>
+				
+            	<h:outputText value="Specification:" />
+            	<p:editor id="editor" value="#{invoiceBean.invoice.specification}" width="500"/>
+            	
+			</p:panelGrid>
+			
+			
+			
+			
+			
+			
+			
+			<h2 style="text-align: center;">Order Data</h2>
+			<hr style="width: 700px; text-align:center;" />
+			<p:panelGrid id="orderData" columns="2" style="width: 700px; margin:10px auto;" styleClass="newInvoice noBorder noBackground">
+					<h:outputText value="Order for Invoice:"/>
+					<p:commandButton value="Attach Order" onsuccess="orderDialog.show()" rendered="#{invoiceBean.order.orderData.ocnr == null}" styleClass="btn btn-success" />
+					<p:commandButton value="Detach Order" actionListener="#{invoiceBean.detachOrder}" rendered="#{invoiceBean.order.orderData.ocnr != null}" update=":form:mainPanel" styleClass="btn btn-warning" />
+					<h:outputText value=" " />
+					<h:outputText id="orderSelected" style="padding-right: 40px; color: #444444; font-style:italic;" rendered="#{invoiceBean.order.orderData.ocnr != null}" value="Selected order with number #{invoiceBean.order.orderData.ocnr}" />
+					<h:outputText id="orderSelected1" style="padding-right: 40px; color: #444444; font-style:italic;" rendered="#{invoiceBean.order.orderData.ocnr == null}" value="No order has been selected" />
+					
+					<h:outputText value="Delivery address:"/>
+					<p:panelGrid columns="2" styleClass="noBorder noBackground"  style="width:450px; margin-left: -10px;">
+					 	<p:autoComplete value="#{invoiceBean.invoice.deliveryInfo}" styleClass="companyButtonListener"
+		                        completeMethod="#{orderBean.completeAddress}" queryDelay="0" 
+		                        var="i" itemLabel="#{i.name}" itemValue="#{i}" converter="companyConverter" forceSelection="true" size="30" effect="fade">  
+			                <f:facet name="itemtip">  
+			                    <h:panelGrid  columns="1" styleClass="noBorder" cellpadding="2" width="250">  
+			                        <h:outputText value="#{i.name}" style="font-weight: bold;" />  
+			                        <h:outputText escape="false" value="#{invoiceBean.replaceNewlines(i.address)}" />  
+			                    </h:panelGrid>  
+			                </f:facet>  
+			                <p:ajax event="focus" listener="#{invoiceBean.setC3(true)}" update="c1, c2, c3"/>
+			                <p:ajax event="blur" listener="#{invoiceBean.setC3(false)}" />
+		            	</p:autoComplete>
+		            	<p:panel id="c3" styleClass="noBorder noBackground companyLink" style="position:absolute">
+		            		<p:commandLink value="Add Company" rendered="#{invoiceBean.c3}" onsuccess="newDialog.show()" actionListener="#{administrationBean.clearFields}" /> 
+	            		</p:panel>
+	            	</p:panelGrid> 
+					 	
+				 	<h:outputText value="Purchase Order Number:"/>
+				 	<p:inputText id="onr" value="#{invoiceBean.invoice.purchaseNumber}" />
+				 	
+				 	<h:outputText value="Marking:"/>
+				 	<p:inputText value="#{invoiceBean.invoice.marking}" />
+				 	
+				 	<h:outputText value="Currency:"/>
+				 	<p:inputText id="currency" value="#{invoiceBean.invoice.currency}" >
+				 		<p:ajax update="totalMoney" />
+				 	</p:inputText>
+				 	
+				 	<h:outputText value="Your ref.:"/>
+				 	<p:autoComplete value="#{invoiceBean.invoice.ref}" completeMethod="#{administrationBean.completePerson}" queryDelay="0" />
+				 	
+				</p:panelGrid>
+			
+			
+			
+			
+			
+			
+			<!-- PRODUCT TABLE -->
+			
+			
+			
+			
+			
+			
+			
+			<h2 style="text-align: center;">Products</h2>
+				<hr />
+		
+				<p:commandButton value="Add Product" actionListener="#{invoiceBean.addProduct}" update="productsTable" styleClass="btn btn-success"/>
+				<p:commandButton value="Product List" onsuccess="productDialog.show()" style="float: right;" styleClass="btn btn-info"/>
+				<p:dataTable id="productsTable" value="#{invoiceBean.products}" var="product" emptyMessage="Please add products" editable="true" 
+								editMode="cell" style="width: 950px; margin: 10px auto;" styleClass="fixedTable cellInput">
+					<p:ajax event="cellEdit" listener="#{invoiceBean.editPrice}" update="totalPrice, :form:totalMoney"/>
+					<p:ajax event="cellEdit" listener="#{invoiceBean.calculateBruttoWeight}" update=":form:totalWeight"/>
+					
+					
+					<f:facet name="header">
+						Products
+					</f:facet>
+					<p:column width="50">
+						<p:commandButton icon="ui-icon-close" actionListener="#{invoiceBean.removeProduct(product)}" update="productsTable, :form:totalMoney" style="width:30px; height: 30px;" styleClass="btn btn-default"/>
+					</p:column>
+					<p:column headerText="Product Number" width="100">
+						<p:cellEditor>
+							<f:facet name="output"><h:outputText value="#{product.pno}" /></f:facet>
+							<f:facet name="input"><p:inputText value="#{product.pno}">
+								<p:ajax event="keyup" listener="#{orderBean.checkProduct(product)}" update="desc1, desc"/>
+	                    				</p:inputText></f:facet>  
+			            </p:cellEditor>
+		            </p:column>
+					<p:column headerText="Description" width="300">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText id="desc" value="#{product.desc}" >
+								</h:outputText>
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText id="desc1" value="#{product.desc}">
+								</p:inputText>
+							</f:facet>  
+			            </p:cellEditor>
+					</p:column>
+					<p:column headerText="Pcs"  width="40">
+						<p:cellEditor>
+							<f:facet name="output"><h:outputText value="#{product.pcs}" /></f:facet>
+							<f:facet name="input"><p:inputText value="#{product.pcs}" onkeypress="if(event.keyCode == 13)this.blur()">
+								<p:ajax event="blur" update="totalPrice, productTotalWeight"/>
+							</p:inputText></f:facet>  
+			            </p:cellEditor>
+					</p:column>
+					<p:column headerText="Weight kg"  width="70">
+						<p:cellEditor>
+							<f:facet name="output"><h:outputText id="weightKg" value="#{product.weight}" /></f:facet>
+							<f:facet name="input"><p:inputText value="#{product.weight}" onkeypress="if(event.keyCode == 13)this.blur()">
+								<p:ajax event="blur" update="productTotalWeight, weightKg"/>
+							</p:inputText></f:facet>  
+			            </p:cellEditor>
+					</p:column>
+					<p:column headerText="Total weight kg"  width="100" styleClass="notEditable">
+						<h:outputText id="productTotalWeight" value="#{invoiceBean.setScale(product.weight * product.pcs, 2)}" />
+					</p:column>
+					<p:column headerText="Price"  width="70">
+						<p:cellEditor>
+							<f:facet name="output"><h:outputText value="#{product.price}" /></f:facet>
+							<f:facet name="input"><p:inputText value="#{product.price}" onkeypress="if(event.keyCode == 13)this.blur()">
+								<p:ajax event="blur" update="totalPrice"/>
+							</p:inputText></f:facet> 
+			            </p:cellEditor>
+					</p:column>
+					<p:column headerText="Total Price" width="70" styleClass="notEditable">
+						<h:outputText id="totalPrice" value="#{invoiceBean.calculatePrice(product)}" />
+					</p:column>
+					
+				</p:dataTable>
+				
+				
+				
+				
+				<!-- TOTAL MONEY -->
+				
+				
+				
+				
+				<p:panelGrid id="totalMoney" columns="2" styleClass="totalMoney noBorder">
+					<h:outputText value="Amount #{invoiceBean.invoice.currency}:" />
+					<h:outputText value="#{invoiceBean.setScale(invoiceBean.invoice.amount,2)}" />
+					
+					<p:panelGrid columns="2" style="font-weight: normal;">
+						<h:outputText value="VAT " />
+						<p:selectOneMenu value="#{invoiceBean.invoice.vat}">
+							<p:ajax update="mainPanel" />
+							<f:selectItem itemLabel="0%" itemValue="0" />  
+							<f:selectItem itemLabel="10%" itemValue="0.1" />  
+							<f:selectItem itemLabel="21%" itemValue="0.21" />  
+						</p:selectOneMenu>
+					</p:panelGrid>
+					<h:outputText value="#{invoiceBean.setScale(invoiceBean.invoice.amount * invoiceBean.invoice.vat, 2)}" style="font-weight: normal;" />
+					
+					<h:outputText value="Total Amount #{invoiceBean.invoice.currency}:" />
+					<h:outputText value="#{invoiceBean.setScale(invoiceBean.invoice.amount + invoiceBean.invoice.amount * invoiceBean.invoice.vat,2)}" />
+				</p:panelGrid>
+			
+			
+			
+			
+			<!-- TOTAL WEIGHT -->
+			
+			
+			
+			<h2 style="text-align: center;">Weight</h2>
+			<hr />
+				
+			<p:panelGrid id="totalWeight" columns="2" style="margin-bottom: 30px;">
+					<h:outputText value="Netto Weight:" style="text-align:right;" />
+					<h:outputText value="#{invoiceBean.setScale(invoiceBean.invoice.nettoWeight,2)}" />
+					
+					<p:panelGrid columns="2" style="font-weight: normal;" styleClass="noBorder">
+						<p:selectBooleanCheckbox value="#{invoiceBean.invoice.packingPlastic}" >
+							<p:ajax listener="#{invoiceBean.calculateBruttoWeight}" update="totalWeight" />
+						</p:selectBooleanCheckbox>
+						<h:outputText value="Packing Plastic:" />
+					</p:panelGrid>
+					<p:inputText id="plasticWeight" value="#{invoiceBean.invoice.plasticWeight}" style="visibility:#{invoiceBean.invoice.packingPlastic ? 'visible' : 'hidden'};" title="Plastic packing material weight kg" >
+						<p:ajax listener="#{invoiceBean.calculateBruttoWeight}" update="totalWeight" />
+					</p:inputText>
+					
+					<p:panelGrid columns="2" style="font-weight: normal;" styleClass="noBorder noBackground">
+						<p:selectBooleanCheckbox value="#{invoiceBean.invoice.packingOther}" >
+							<p:ajax listener="#{invoiceBean.calculateBruttoWeight}" update="totalWeight" />
+						</p:selectBooleanCheckbox>
+						<h:outputText value="Packing Other:" />
+					</p:panelGrid>
+					<p:panelGrid columns="2" styleClass="noBorder noBackground" style="text-align:right; margin-left: -10px; padding: 0px; visibility:#{invoiceBean.invoice.packingOther ? 'visible' : 'hidden'};" >
+						<h:outputText value="Type:" />
+						<p:inputText id="otherType" value="#{invoiceBean.invoice.otherType}" style="visibility:#{invoiceBean.invoice.packingOther ? 'visible' : 'hidden'};" title="Specify Packing material" />
+						<h:outputText value="Total weight:" />
+						<p:inputText id="otherWeight" value="#{invoiceBean.invoice.otherWeight}" title="Other packing material weight kg" >
+							<p:ajax listener="#{invoiceBean.calculateBruttoWeight}" update="bruttoWeight" />
+						</p:inputText>
+						<h:outputText value="Pcs:" />
+						<p:inputText id="pcs" value="#{invoiceBean.invoice.pcs}" title="other packing material pieces count" />
+						<h:outputText value="Size:" />
+						<p:inputText id="size" value="#{invoiceBean.invoice.size}" title="size, example: 80x60x80" />
+					</p:panelGrid>
+					
+					<h:outputText value="Brutto Weight:" />
+					<p:column>
+						<h:outputText id="bruttoWeight" value="#{invoiceBean.setScale(invoiceBean.invoice.bruttoWeight,2)}" />
+						
+					</p:column>
+				</p:panelGrid>
+			
+			
+			
+			
+			<!-- OTHER INFO -->
+			
+			
+			
+			
+			
+			
+			
+			
+			<p:commandButton value="Back" action="back" styleClass="btn btn-danger"/>
+			<p:commandButton value="Save" actionListener="#{invoiceBean.save}" rendered="#{not invoiceBean.edit}" update="form" styleClass="btn btn-success"/>
+			<p:commandButton value="Save" actionListener="#{invoiceBean.saveEdited}" rendered="#{invoiceBean.edit}" update="form" styleClass="btn btn-success"/>
+			
+			</p:panel>
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			<!-- DIALOG WITH ORDERLIST -->
+			
+			
+			
+			
+			<p:dialog widgetVar="orderDialog" dynamic="true" showEffect="fade" hideEffect="fade" modal="true" height="50%" width="900px" header="Select Order" resizable="true">
+				<p:dataTable id="table" value="#{invoiceBean.ordersModel}" var="order" style="font-size: 12px; text-align: center;" 
+							liveScroll="false" scrollable="true" scrollHeight="500" selection="#{invoiceBean.order}" selectionMode="single">
+				
+				<p:ajax event="rowSelect" listener="#{invoiceBean.orderSelected}" oncomplete="orderDialog.hide()" update=":form:mainPanel" /> 
+				
+				<p:column headerText="Status" styleClass="phase, #{orderBean.style(order)}" width="50">
+					#{orderBean.getStatusName(order.t)}
+				</p:column>
+				<p:column headerText="Order Confirmation Number" width="50">
+					#{order.orderData.ocnr}
+				</p:column>
+				<p:column headerText="Company" width="100">
+					#{order.orderData.company}
+				</p:column>
+				<p:column headerText="Purchase order Number" width="100">
+					#{order.orderData.ordernr}
+				</p:column>
+				<p:column headerText="Order Date" width="50">
+					#{order.orderData.odate}
+				</p:column>
+				<p:column headerText="Delivery Date" width="100">
+					#{order.orderData.ddate}
+				</p:column>
+				</p:dataTable>
+			</p:dialog>
+			
+			
+			
+			
+			
+			<!-- DIALOG WITH PRODUCTLIST -->
+			
+			
+			
+			
+			<p:dialog widgetVar="productDialog" dynamic="false" modal="false" header="Products" width="900" showEffect="fade" hideEffect="fade">
+				<p:dataTable var="p" value="#{administrationBean.products}" scrollable="true" scrollHeight="500" >
+				
+					<p:column headerText="Product Number" width="100">  
+			            <h:outputText value="#{p.pno}" />  
+			        </p:column> 
+			        
+			        <p:column headerText="Description" width="700">  
+			            <h:outputText value="#{p.desc}" />  
+			        </p:column>
+			        
+				</p:dataTable>
+			</p:dialog>
+			
+			
+			<!-- DIALOG NEW COMPANY -->
+			
+			
+			<p:dialog widgetVar="newDialog" modal="true" header="Create Company" resizable="false" dynamic="true">
+				<p:panelGrid columns="2">
+					<h:outputText value="Company Name"/>
+					<p:inputText value="#{administrationBean.company.name}" />
+					<h:outputText value="Last Order Number"/>
+					<p:inputText value="#{administrationBean.company.onr}" />
+					<h:outputText value="Address"/>
+					<p:inputTextarea value="#{administrationBean.company.address}" cols="50" rows="6"/>
+					<h:outputText value="Properties"/>
+					<p:inputTextarea value="#{administrationBean.company.properties}" cols="50" rows="6"/>
+				</p:panelGrid>
+				<p:commandButton value="Save" actionListener="#{administrationBean.saveCompany}" onclick="newDialog.hide()" update="form" styleClass="btn btn-success"/>
+				<p:commandButton value="Calcel" onclick="newDialog.hide()" update="form" styleClass="btn btn-danger"/>
+			</p:dialog>
+			
+			
+			
+			
+			
+        </h:form>
+        </ui:define>
+        
+</ui:composition>

@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/forms.xhtml"
+                >
+        
+                <ui:define name="title"><h:outputText value="Order Confirmation" /></ui:define>
+        
+        <ui:define name="content">
+        <h:form id="form" styleClass="form" style="font-size: 12px !important; font-family: Tahoma !important; width: 800px; margin: auto;">
+        	<div style="height: 100px; margin: 0px;">
+        		<p:graphicImage value="/images/gjerde-logo-small.jpg" style="width: 100px; margin: 0px; float:left; margin-bottom: 10px; margin-top:-20px;" />
+        	
+        		<div style="color: blue; font-family: 'Arial Black' !important; font-size: 16px !important; margin: 10px auto; width: 150px; font-weight: bold;">Sia Saldus Welding</div>
+        	</div>
+        	<hr class="style" />
+        	
+        	<div style="float:left; width: 250px; clear: both;">
+	        	<h:outputText escape="false" value="#{invoiceBean.invoice.sellerInfo.name}" style="font-size: 14px !important;" /> <br />
+	        	<h:outputText escape="false" value="#{invoiceBean.replaceNewlines(invoiceBean.invoice.sellerInfo.address)}" /> <br /><br />
+        	</div>
+        	<h:outputText escape="false" value="#{invoiceBean.replaceNewlines(invoiceBean.invoice.sellerInfo.properties)}" style="width: 250px; float:right;" /> <br /><br /><br />
+        	
+        	<div style="float:left; width:250px; clear: both;">
+	        	<h:outputText escape="false" value="#{invoiceBean.invoice.buyerInfo.name}" style="font-size: 14px !important;" /> <br />
+	        	<h:outputText escape="false" value="#{invoiceBean.replaceNewlines(invoiceBean.invoice.buyerInfo.address)}" />
+        	</div>
+        	<h:outputText escape="false" value="#{invoiceBean.replaceNewlines(invoiceBean.invoice.buyerInfo.properties)}" style="width: 250px; float:right;" />
+        	
+        	<h:outputText value="Delivery add:" style="float:left; clear:both; font-weight: bold; margin-right: 10px;" />
+        	<div style="float:left;">
+	        	<h:outputText escape="false" value="#{invoiceBean.replaceNewlines(invoiceBean.invoice.deliveryInfo.address)}" /> <br /><br />
+        	</div>
+        	
+        	<div style="clear:both; float:left;">
+        		<h:outputText value="Purchase No.: #{invoiceBean.invoice.purchaseNumber}"/> <br />
+        		<h:outputText value="Marking: #{invoiceBean.invoice.marking}"/> <br />
+        		<h:outputText value="Your ref.: #{invoiceBean.invoice.ref}"/>
+        	</div>
+        	<div style="float:left; margin-left: 100px;">
+        		<h:outputText value="Contact Person: #{invoiceBean.invoice.contactPerson}"/> <br />
+        		<h:outputText value="Tel: #{invoiceBean.invoice.contactTel}"/>
+        	</div>
+        	
+        	<h1 style="text-align:center; font-weight: bold; margin-top: 30px; margin-bottom: 30px; clear:both;"><h:outputText value="PROFORMA INVOICE Nr. SW #{invoiceBean.invoice.number}/#{invoiceBean.invoice.year}" /></h1>
+        	
+        	<p:dataTable var="p" value="#{invoiceBean.invoice.productData}" styleClass="formTable borderless invoiceTable">
+				<p:column headerText="Product Nr.">
+					#{p.pno}
+				</p:column>
+				<p:column headerText="Produce" styleClass="textLeftTable wrap">
+					#{p.desc}
+				</p:column>
+				<p:column headerText="Pcs">
+					#{p.pcs}
+				</p:column>
+				<p:column headerText="Weight kg">
+					#{p.weight}
+				</p:column>
+				<p:column headerText="Total Weight kg">
+					#{invoiceBean.setScale(invoiceBean.calculateTotalWeight(p), 2)}
+				</p:column>
+				<p:column headerText="Price #{invoiceBean.invoice.currency}">
+					#{invoiceBean.setScale(p.price, 2)}
+				</p:column>
+				<p:column headerText="Total Price #{invoiceBean.invoice.currency}">
+					#{invoiceBean.setScale(orderBean.calculatePrice(p), 2)}
+				</p:column>
+			</p:dataTable>
+			
+			
+			
+			
+        	
+        	<div style="float: right; width:300px; margin-top: 30px;">
+        		<div style="text-align:right; width:150px; float:left;">
+					<h:outputText value="Amount #{invoiceBean.invoice.currency}" /> <br />
+					<h:outputText value="VAT #{invoiceBean.setScale(invoiceBean.invoice.vat * 100, 0)} %" /> <br />
+					<h:outputText value="Total Amount #{invoiceBean.invoice.currency}" style="font-weight: bold;" /> <br /><br />
+				</div>
+				<div style="width:50px;"></div>
+				<div style="width:100px; float:right; text-align: center;">					
+					<h:outputText value="#{invoiceBean.setScale(invoiceBean.invoice.amount,2)}" /> <br />
+					<h:outputText value="#{invoiceBean.setScale(invoiceBean.invoice.amount * invoiceBean.invoice.vat, 2)}" style="font-weight: normal;" /> <br />
+					<h:outputText value="#{invoiceBean.setScale(invoiceBean.invoice.amount + invoiceBean.invoice.amount * invoiceBean.invoice.vat,2)}" style="font-weight: bold;" /> <br /><br />
+				</div>					
+			</div>
+			
+			
+			
+			
+			
+			
+			<div style="margin:auto; width:400px; clear:both;">
+        		<div style="text-align:right; width:300px; float:left;">
+					<h:outputText value="Netto weight" /> <br />
+					<h:outputText value="Packingmaterial plastic" rendered="#{invoiceBean.invoice.packingPlastic}" /> <br />
+					<h:outputText value="Packingmaterial #{invoiceBean.invoice.pcs} #{invoiceBean.invoice.otherType}" rendered="#{invoiceBean.invoice.packingOther}" /> <br />
+					<h:outputText value="Brutto weight" />
+				</div>
+				<div style="width:100px; float:right; text-align: right;">		
+					<h:outputText value="#{invoiceBean.setScale(invoiceBean.invoice.nettoWeight,2)} kg" /> <br />			
+					<h:outputText value="#{invoiceBean.setScale(invoiceBean.invoice.plasticWeight,2)} kg" rendered="#{invoiceBean.invoice.packingPlastic}" /> <br />			
+					<h:outputText value="#{invoiceBean.setScale(invoiceBean.invoice.otherWeight,2)} kg" rendered="#{invoiceBean.invoice.packingOther}" style="float:right;" />
+					<h:outputText value="#{invoiceBean.invoice.size}" rendered="#{invoiceBean.invoice.packingOther}" style="float:right; left: 100px; position:relative; width: 0px;" /> <br />			
+					<h:outputText value="#{invoiceBean.setScale(invoiceBean.invoice.bruttoWeight,2)} kg" style="clear:both; float:right;" />			
+				</div>					
+			</div><br style="clear:both;" /><br /><br />
+			
+			
+			
+			<div style="margin:auto; width:700px;">
+				<div style="float:left; width: 400px;">
+					<h:outputText value="NOT TO BE PAID, FOR CUSTOM PURPOSE ONLY." /><br />
+					<h:outputText value="This product is wholly produced" /><br />
+					<h:outputText value="in the country of Latvia" /><br /><br />
+					<h:outputText value="Saldus #{invoiceBean.formatDate(invoiceBean.invoice.created)}" /><br />
+					<h:outputText value="Terms of delivery: #{invoiceBean.invoice.termsDelivery}" /><br />
+					<h:outputText value="Delivery date : #{invoiceBean.invoice.deliveryDate}" /><br />
+					<h:outputText value="Terms of payment : #{invoiceBean.invoice.termsPayment}" /><br />
+					<h:outputText value="Due Date : #{invoiceBean.invoice.dueDate}" /><br /><br />
+					<h:outputText value="Sia Saldus Welding" /><br />
+					<h:outputText value="Santa Fridrihsone" /><br /><br />
+				</div>
+				<div style="float:right; width:300px;">
+					<h:outputText escape="false" value="#{invoiceBean.replaceNewlines(invoiceBean.invoice.specification)}" />
+				</div>
+			</div>
+			
+			<div style="clear: both;">
+				<h:outputText escape="false" value="#{invoiceBean.replaceNewlines(invoiceBean.invoice.pvn)}" />
+			</div>
+        	
+        </h:form>
+        </ui:define>
+        
+</ui:composition>

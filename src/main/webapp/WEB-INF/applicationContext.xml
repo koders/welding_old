@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+        >
+        
+        <import resource="datasource-config.xml" />
+        <import resource="webflow-config.xml" />  
+        <import resource="security-config.xml" />      
+        
+        
+        <!-- - - - - - - - - - - - - - - - - - - - - - DAO - - - - - - - - - - - - - - - - - -  -->
+        
+        
+        <bean id="orderDao" class="lv.welding.orders.dao.OrderJpaDao" />
+		<bean id="productDao" class="lv.welding.orders.dao.ProductJpaDao" />
+		<bean id="termsDao" class="lv.welding.orders.dao.TermsJpaDao" />
+        <bean id="userDao" class="lv.welding.orders.dao.UserJpaDao" />
+        <bean id="companyDao" class="lv.welding.orders.dao.CompanyJpaDao" />
+        <bean id="invoiceDao" class="lv.welding.orders.dao.InvoiceJpaDao" />
+        <bean id="countryDao" class="lv.welding.orders.dao.CountryJpaDao" />
+        <bean id="personDao" class="lv.welding.orders.dao.PersonJpaDao" />
+        <bean id="categoryDao" class="lv.welding.orders.dao.CategoryJpaDao" />
+        <bean id="productModelDao" class="lv.welding.orders.dao.ProductModelJpaDao" />
+        <bean id="productSizeDao" class="lv.welding.orders.dao.ProductSizeJpaDao" />
+        <bean id="productMaterialDao" class="lv.welding.orders.dao.ProductMaterialJpaDao" />
+
+
+        <!-- - - - - - - - - - - - - - - - - - - - SERVICES - - - - - - - - - - - - - - - - - -  -->
+        
+        
+        <bean id="userService" class="lv.welding.orders.services.impl.UserServiceImpl">
+        	<property name="userDao" ref="userDao" />
+        </bean>
+        
+        <bean id="mainService" class="lv.welding.orders.services.impl.MainServiceImpl">
+        	<property name="companyDao" ref="companyDao" />
+        	<property name="productDao" ref="productDao" />
+        	<property name="personDao" ref="personDao" />
+        </bean>
+
+        <bean id="stockService" class="lv.welding.orders.services.impl.StockServiceImpl">
+            <property name="productDao" ref="productDao" />
+            <property name="orderDao" ref="orderDao" />
+        </bean>
+        
+        
+        <!-- - - - - - - - - - - - - - - - - - - - - - DTO - - - - - - - - - - - - - - - - - -  -->
+        
+        
+        <bean id="userBean" class="lv.welding.orders.dto.UserDTO" scope="session">
+        	<property name="userService" ref="userService" />
+        	<property name="authenticationManager" ref="authenticationManager" />
+            <property name="administrationDTO" ref="administrationBean" />
+        </bean>
+        
+		<bean id="orderBean" class="lv.welding.orders.dto.OrderDTO">
+			<property name="orderDao" ref="orderDao" />
+			<property name="productDao" ref="productDao" />
+			<property name="service" ref="mainService" />
+			<property name="stockService" ref="stockService" />
+		</bean>
+		
+		<bean id="administrationBean" class="lv.welding.orders.dto.AdministrationDTO">
+			<property name="termsDao" ref="termsDao" />
+			<property name="companyDao" ref="companyDao" />
+			<property name="productDao" ref="productDao" />
+			<property name="countryDao" ref="countryDao" />
+			<property name="personDao" ref="personDao" />
+			<property name="categoryDao" ref="categoryDao" />
+			<property name="userService" ref="userService" />
+			<property name="productModelDao" ref="productModelDao" />
+			<property name="productSizeDao" ref="productSizeDao" />
+			<property name="productMaterialDao" ref="productMaterialDao" />
+		</bean>
+		
+		<bean id="invoiceBean" class="lv.welding.orders.dto.InvoiceDTO">
+			<property name="invoiceDao" ref="invoiceDao" />
+			<property name="orderDao" ref="orderDao" />
+			<property name="companyDao" ref="companyDao" />
+			<property name="productDao" ref="productDao" />
+			<property name="service" ref="mainService" />
+		</bean>
+		
+		<bean id="chart" class="lv.welding.orders.dto.Chart">
+			<property name="invoiceService" ref="invoiceBean" />
+		</bean>
+
+		<bean id="statistics" class="lv.welding.orders.services.impl.StatisticsImpl">
+			<property name="invoiceService" ref="invoiceBean" />
+		</bean>
+
+        <bean id="productStatistics" class="lv.welding.orders.dto.ProductStatistics">
+            <property name="productDao" ref="productDao" />
+            <property name="invoiceService" ref="invoiceBean" />
+        </bean>
+
+        <bean id="statisticsBean" class="lv.welding.orders.services.impl.StatisticsService">
+            <property name="administrationDTO" ref="administrationBean" />
+            <property name="invoiceDTO" ref="invoiceBean" />
+        </bean>
+
+        <bean id="chartService" class="lv.welding.orders.services.impl.ChartServiceImpl">
+            <property name="invoiceDao" ref="invoiceDao" />
+            <property name="productDao" ref="productDao" />
+        </bean>
+		
+		
+</beans>

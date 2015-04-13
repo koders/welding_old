@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/forms.xhtml"
+                >
+        
+                <ui:define name="title"><h:outputText value="Report" /></ui:define>
+        
+        <ui:define name="content">
+        <h:form id="form">
+        	
+        	<p:dataTable var="invoices" value="#{invoiceBean.getInvoicesForReport(invoiceBean.months.getTarget())}" style="text-align: center;" lazy="true">
+        		<p:subTable var="invoice" value="#{invoices.invoices}" >
+	        		<f:facet name="header">
+	        			<br />
+	        			<br />
+	        			<h2>#{invoices.year}</h2>
+	        			<hr />
+	        			<div style="margin-left: -10px; margin-right: -10px;">
+		        			<div style="float:left; width:5%; border: 1px solid transparent;">Nr.</div>
+		        			<div style="float:left; width:10%; border: 1px solid transparent;">Delivery Date</div>
+		        			<div style="float:left; width:30%; border: 1px solid transparent;">Company</div>
+		        			<div style="float:left; width:40%; border: 1px solid transparent;">Delivery Address</div>
+		        			<div style="float:left; width:14%; border: 1px solid transparent;">Sum</div>
+	        			</div>
+	        		</f:facet>
+	        		<p:column headerText="Nr" style="width: 5%;">
+		        		#{invoice.number}
+		        	</p:column>
+		        	<p:column headerText="Delivery Date" style="width: 10%;">
+		        		#{invoice.deliveryDate}
+		        	</p:column>
+		        	<p:column style="width: 30%;" headerText="Company">
+		        		#{invoice.buyerInfo.name}
+		        	</p:column>
+		        	<p:column style="width: 40%;" headerText="Delivery Address">
+		        		#{invoiceBean.compressedText(invoiceBean.getDeliveryNameAndAddress(invoice), 50)}
+		        	</p:column>
+		        	<p:column style="width: 15%;" headerText="Sum">
+		        		<h:outputText value="#{invoiceBean.setScale(invoice.totalAmount,2)} #{invoice.currency}" />
+		        	</p:column>
+		        	
+		        	<p:columnGroup type="footer">
+		        		<p:row>
+		        			<p:column footerText="Total EUR:" colspan="4" style="text-align:right; color:black;" />
+		        			<p:column footerText="#{invoiceBean.setScale(invoices.totalEur,2)} EUR" style="color: black;" />
+		        		</p:row>
+		        		<p:row rendered="#{invoiceBean.setScale(invoices.totalNok,2) > 0}">
+		        			<p:column footerText="Total NOK:" colspan="4" style="text-align:right; color:black;" />
+		        			<p:column footerText="#{invoiceBean.setScale(invoices.totalNok,2)} NOK" style="color: black;" />
+		        		</p:row>
+		        	</p:columnGroup>
+	        	</p:subTable>
+        	</p:dataTable>
+        	
+        </h:form>
+        </ui:define>
+        
+</ui:composition>

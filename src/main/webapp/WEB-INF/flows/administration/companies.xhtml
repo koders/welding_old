@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/general.xhtml">
+        
+        <ui:define name="title"><h:outputText value="Companies" /></ui:define>
+        
+        <ui:define name="content">
+        <h:form id="form">
+        	<p:growl id="growl" showDetail="false" life="3000" autoUpdate="true" />
+        	
+			<p:commandButton value="New Company" onsuccess="newDialog.show()" actionListener="#{administrationBean.clearFields}" style="margin: 10px;" styleClass="btn btn-success"/>
+			<p:commandButton value="Back" action="back" style="margin: 10px;" styleClass="btn btn-danger"/>
+			<p:dataTable var="c" value="#{administrationBean.companies}" style="margin: 10px;" sortBy="#{c.name}">
+				
+				<p:column headerText="Edit" width="10">
+					<p:commandLink actionListener="#{administrationBean.setCompanyForEdit(c)}" onsuccess="newDialog.show()">
+						<h:graphicImage value="/images/doc.png" width="30"/>
+					</p:commandLink>
+				</p:column>
+				
+				<p:column headerText="Company Name" style="font-weight: bold; text-align: left;">  
+		            <h:outputText value="#{c.name}" />  
+		        </p:column> 
+		        
+		        <p:column headerText="Last Order Number">  
+		            <h:outputText value="#{c.onr}" />  
+		        </p:column>
+		        
+		        <p:column headerText="Address">  
+		            <h:outputText escape="false" value="#{invoiceBean.replaceNewlines(c.address)}" />  
+		        </p:column>
+		        
+		        <p:column headerText="Properties">  
+		            <h:outputText escape="false" value="#{invoiceBean.replaceNewlines(c.properties)}" />  
+		        </p:column>
+		        
+		         <p:column headerText="Delete" style="text-align: center;" width="10">  
+		            <p:commandLink onclick="delDialog.show()">
+						<h:graphicImage value="/images/delete.png" width="25"/>
+						<f:setPropertyActionListener target="#{administrationBean.company}" value="#{c}" />
+					</p:commandLink>
+		        </p:column>
+			</p:dataTable>
+			
+			<p:dialog widgetVar="delDialog" modal="true" header="Delete Company" resizable="false" dynamic="true">
+				<p:panelGrid styleClass="noBorder">
+				<p:row>
+					<p:column colspan="2"><h:outputText value="Are you sure you want to delete #{administrationBean.company.name}?" /></p:column>
+				</p:row>
+				<p:row>
+					<p:column><p:commandButton value="Yes" actionListener="#{administrationBean.deleteCompany}" onclick="delDialog.hide()" update="form" styleClass="btn btn-warning" />
+					<p:commandButton value="No" onclick="delDialog.hide()" update="form" styleClass="btn btn-danger"/></p:column>
+				</p:row>
+				</p:panelGrid>
+			</p:dialog>
+			
+			<p:dialog widgetVar="newDialog" modal="true" header="Edit Company" resizable="false" dynamic="true">
+				<p:panelGrid columns="2">
+					<h:outputText value="Company Name"/>
+					<p:inputText value="#{administrationBean.company.name}" />
+					<h:outputText value="Last Order Number"/>
+					<p:inputText value="#{administrationBean.company.onr}" />
+					<h:outputText value="Address"/>
+					<p:inputTextarea value="#{administrationBean.company.address}" cols="50" rows="6"/>
+					<h:outputText value="Properties"/>
+					<p:inputTextarea value="#{administrationBean.company.properties}" cols="50" rows="6"/>
+				</p:panelGrid>
+				<p:commandButton value="Save" actionListener="#{administrationBean.saveCompany}" onclick="newDialog.hide()" update="form" styleClass="btn btn-success"/>
+				<p:commandButton value="Calcel" onclick="newDialog.hide()" update="form" styleClass="btn btn-danger" />
+			</p:dialog>
+			
+			<p:commandButton value="Back" action="back" style="margin: 10px;" styleClass="btn btn-danger" />
+        </h:form>
+        </ui:define>
+        
+</ui:composition>

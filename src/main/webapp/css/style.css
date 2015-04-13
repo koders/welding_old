@@ -1,0 +1,567 @@
+@import url('http://fonts.googleapis.com/css?family=Lato');
+@font-face { font-family: "Helvetica Neue Light"; src: url("../fonts/HelveticaNeue-Light.otf") format("opentype"); }
+
+@media print {
+	html, body {
+		height: 98%;
+		margin: 0px !important;
+		margin-top: 0cm !important;
+		page-break-after:avoid;
+	}
+	html {
+	padding: 0px;}
+	body {
+		padding: 5mm 10mm 2mm 10mm;
+	}
+	#content {
+		position: relative;
+		min-height: 22cm;
+	}
+    #footer { 
+    }
+}
+    
+html, body {
+	font-size: 14px;
+	font-family: "Helvetica Neue Light", "Helvetica Neue", Helvetica;
+	-webkit-font-smoothing: antialiased !important;
+	//text-shadow: 1px 1px 1px rgba(0,0,0,0.004) !important;
+}
+
+#footer {
+	font-size: 16px;
+	position: static; bottom: 0px;
+}
+
+.newOrder input {
+	width: 500px;
+}
+
+.newInvoice input {
+	width: 500px;
+}
+
+.newOrder td:FIRST-CHILD {
+	text-align: right;
+	width: 250px;
+}
+
+.newOrder textarea {
+	width: 500px;
+}
+
+.newInvoice td:FIRST-CHILD {
+	text-align: right;
+	width: 250px;
+}
+
+.newInvoice td, .newOrder td,  .newInvoice td input, .newOrder td input{
+	font-family: Lato;
+}
+
+.ui-state-highlight1 {
+	background: #0099ff !important;
+	background-color:#0081c2 !important;
+	background-position:0px;
+	background:-moz-linear-gradient(top, #0088cc, #0077b3) !important;
+	background:-webkit-gradient(linear, 0 0, 0 100%, from(#0088cc), to(#0077b3)) !important;
+	background:-webkit-linear-gradient(top, #0088cc, #0077b3) !important;
+	background:-o-linear-gradient(top, #0088cc, #0077b3) !important;
+	background:linear-gradient(to bottom, #0088cc, #0077b3) !important;
+	background-repeat:repeat-x;
+	filter:progid:dximagetransform.microsoft.gradient(startColorstr='#ff0088cc', endColorstr='#ff0077b3', GradientType=0);
+	border: none;
+}
+
+td.ui-state-highlight1 {
+	background: none !important;
+	border: none !important;
+}
+
+.ui-cell-editor-input input {
+	width: 100%;
+	margin-left: 5px;
+}
+
+.noBorder tr, .noBorder td {
+	border: none;
+}
+
+.noBackground tr, .noBackground {
+	background: none;
+	background-image: none;
+}
+
+.noWidgetHeader .ui-widget-header {
+	background: none;
+}
+
+.head {
+	float: right;
+	font-family: "Helvetica Neue", "Helvetica Neue Light", Arial, sans-serif !important;
+	font-size: 14px;
+}
+
+.phase0 {
+	color: white;
+background-image: linear-gradient(left top, rgb(186,186,186) 36%, rgb(153,153,153) 100%);
+background-image: -o-linear-gradient(left top, rgb(186,186,186) 36%, rgb(153,153,153) 100%);
+background-image: -moz-linear-gradient(left top, rgb(186,186,186) 36%, rgb(153,153,153) 100%);
+background-image: -webkit-linear-gradient(left top, rgb(186,186,186) 36%, rgb(153,153,153) 100%);
+background-image: -ms-linear-gradient(left top, rgb(186,186,186) 36%, rgb(153,153,153) 100%);
+	text-shadow: 1px 1px black;
+background-image: linear-gradient(left top, rgb(255,234,0) 36%, rgb(255,183,0) 100%);
+background-image: -o-linear-gradient(left top, rgb(255,234,0) 36%, rgb(255,183,0) 100%);
+background-image: -moz-linear-gradient(left top, rgb(255,234,0) 36%, rgb(255,183,0) 100%);
+background-image: -webkit-linear-gradient(left top, rgb(255,234,0) 36%, rgb(255,183,0) 100%);
+background-image: -ms-linear-gradient(left top, rgb(255,234,0) 36%, rgb(255,183,0) 100%);
+
+background: #ff0000; /* Old browsers */
+background: -moz-linear-gradient(left,  #ff0000 0%, #d30000 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, right top, color-stop(0%,#ff0000), color-stop(100%,#d30000)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(left,  #ff0000 0%,#d30000 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(left,  #ff0000 0%,#d30000 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(left,  #ff0000 0%,#d30000 100%); /* IE10+ */
+background: linear-gradient(to right,  #ff0000 0%,#d30000 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff0000', endColorstr='#d30000',GradientType=1 ); /* IE6-9 */
+
+
+}
+
+.phase1 {
+	color: white;
+	text-shadow: 1px 1px black;
+background-image: linear-gradient(left top, rgb(0,85,255) 3%, rgb(0,8,153) 79%);
+background-image: -o-linear-gradient(left top, rgb(0,85,255) 3%, rgb(0,8,153) 79%);
+background-image: -moz-linear-gradient(left top, rgb(0,85,255) 3%, rgb(0,8,153) 79%);
+background-image: -webkit-linear-gradient(left top, rgb(0,85,255) 3%, rgb(0,8,153) 79%);
+background-image: -ms-linear-gradient(left top, rgb(0,85,255) 3%, rgb(0,8,153) 79%);
+
+background-image: linear-gradient(left top, rgb(186,186,186) 36%, rgb(153,153,153) 100%);
+background-image: -o-linear-gradient(left top, rgb(186,186,186) 36%, rgb(153,153,153) 100%);
+background-image: -moz-linear-gradient(left top, rgb(186,186,186) 36%, rgb(153,153,153) 100%);
+background-image: -webkit-linear-gradient(left top, rgb(186,186,186) 36%, rgb(153,153,153) 100%);
+background-image: -ms-linear-gradient(left top, rgb(186,186,186) 36%, rgb(153,153,153) 100%);
+
+background-image: -webkit-gradient(
+	linear,
+	left top,
+	right bottom,
+	color-stop(0.03, rgb(0,85,255)),
+	color-stop(0.79, rgb(0,8,153))
+);
+}
+
+.phase1 {
+	color: white;
+	text-shadow: 1px 1px black;
+	background-image: linear-gradient(left top, rgb(217,0,0) 20%, rgb(89,1,1) 100%);
+background-image: -o-linear-gradient(left top, rgb(217,0,0) 20%, rgb(89,1,1) 100%);
+background-image: -moz-linear-gradient(left top, rgb(217,0,0) 20%, rgb(89,1,1) 100%);
+background-image: -webkit-linear-gradient(left top, rgb(217,0,0) 20%, rgb(89,1,1) 100%);
+background-image: -ms-linear-gradient(left top, rgb(217,0,0) 20%, rgb(89,1,1) 100%);
+
+background-image: -webkit-gradient(
+	linear,
+	left top,
+	right bottom,
+	color-stop(0.2, rgb(217,0,0)),
+	color-stop(1, rgb(89,1,1))
+);
+background-image: linear-gradient(left top, rgb(255,234,0) 36%, rgb(255,183,0) 100%);
+background-image: -o-linear-gradient(left top, rgb(255,234,0) 36%, rgb(255,183,0) 100%);
+background-image: -moz-linear-gradient(left top, rgb(255,234,0) 36%, rgb(255,183,0) 100%);
+background-image: -webkit-linear-gradient(left top, rgb(255,234,0) 36%, rgb(255,183,0) 100%);
+background-image: -ms-linear-gradient(left top, rgb(255,234,0) 36%, rgb(255,183,0) 100%);
+}
+
+.phase2 {
+	color: white;
+	text-shadow: 1px 1px black;
+
+background-image: linear-gradient(left top, rgb(28,212,0) 36%, rgb(7,135,0) 100%);
+background-image: -o-linear-gradient(left top, rgb(28,212,0) 36%, rgb(7,135,0) 100%);
+background-image: -moz-linear-gradient(left top, rgb(28,212,0) 36%, rgb(7,135,0) 100%);
+background-image: -webkit-linear-gradient(left top, rgb(28,212,0) 36%, rgb(7,135,0) 100%);
+background-image: -ms-linear-gradient(left top, rgb(28,212,0) 36%, rgb(7,135,0) 100%);
+
+background-image: -webkit-gradient(
+	linear,
+	left top,
+	right bottom,
+	color-stop(0.03, rgb(0,255,0)),
+	color-stop(1, rgb(0,150,0))
+);
+}
+
+.phase3 {
+	color:white;
+	text-shadow: 1px 1px black;
+	background-image: linear-gradient(left top, rgb(97,97,97) 20%, rgb(0,0,0) 100%);
+background-image: -o-linear-gradient(left top, rgb(97,97,97) 20%, rgb(0,0,0) 100%);
+background-image: -moz-linear-gradient(left top, rgb(97,97,97) 20%, rgb(0,0,0) 100%);
+background-image: -webkit-linear-gradient(left top, rgb(97,97,97) 20%, rgb(0,0,0) 100%);
+background-image: -ms-linear-gradient(left top, rgb(97,97,97) 20%, rgb(0,0,0) 100%);
+
+background-image: -webkit-gradient(
+	linear,
+	left top,
+	right bottom,
+	color-stop(0.2, rgb(97,97,97)),
+	color-stop(1, rgb(0,0,0))
+);
+}
+
+.completeAddress input {
+	height:300px;
+}
+
+.adminLink {
+	width: 100px;
+	float: left;
+	margin-left: 20px;
+	
+}
+
+.adminLink p {
+	margin: 5px auto 0px;
+	text-align:center;
+	color: black;
+	font-size:  14px;
+}
+
+.adminLink a {
+	text-decoration: none;
+}
+
+.adminIcon {
+	margin-top: 5px;
+	border-color: rgba(82, 168, 236, 0.8);
+	 
+	 box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.075) inset;
+transition: border 0.2s linear 0s, box-shadow 0.2s linear 0s;
+}
+
+.adminLink:hover .adminIcon {
+	border-color: rgba(82, 168, 236, 0.8);
+        outline: 0;
+        outline: thin dotted \9;
+        /* IE6-9 */
+
+        -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 4px rgba(82, 168, 236, 1);
+           -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 4px rgba(82, 168, 236, 1);
+                box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 4px rgba(82, 168, 236, 1);
+}
+
+.ui-growl-title {
+	font-size: 12px;
+	margin-top: 5px;
+}
+
+.ui-growl {
+	top: 30px;
+	right: 30px;
+}
+
+.formTable, .formTable th, .formTable td {
+	color: black !important;
+	background: none !important;
+	text-align: center;
+	border-color: black !important;
+}
+
+.form, .form .ui-widget  {
+	 font-size:16px !important;
+	 font-family:"Times New Roman",Times,serif !important;
+}
+
+.loginfield {
+	background-image: linear-gradient(top, rgb(240,240,240) 36%, rgb(207,207,207) 100%);
+background-image: -o-linear-gradient(top, rgb(240,240,240) 36%, rgb(207,207,207) 100%);
+background-image: -moz-linear-gradient(top, rgb(240,240,240) 36%, rgb(207,207,207) 100%);
+background-image: -webkit-linear-gradient(top, rgb(240,240,240) 36%, rgb(207,207,207) 100%);
+background-image: -ms-linear-gradient(top, rgb(240,240,240) 36%, rgb(207,207,207) 100%);
+	
+	
+	-webkit-box-shadow: 1px 1px 1px gray;
+    -moz-box-shadow: 3px 3px 3px gray;
+    box-shadow: 3px 3px 3px gray;
+    
+    width: 450px;
+    margin: 15% auto;
+}
+
+.orderSelect td, .orderSelect tr{
+	border: 0px;
+}
+
+.search-icon {
+	transition: all 0.3s ease-in-out;
+}
+	
+.search-icon:hover {
+	transform:scale(1.3,1.3);
+}
+
+h1, h2, h3 {
+	margin-bottom: 0px;
+	font-family: "Helvetica Neue Light", "Helvetica Neue", sans-serif !important;
+	font-weight: 100;
+}
+
+
+.totalMoney {
+	margin: 30px;
+	margin-left: 700px;
+	font-weight: bold;
+}
+
+.fixedTable table {
+	table-layout: fixed;
+}
+
+.autoTable table {
+    table-layout: auto;
+}
+
+.cellInput table input {
+	background: #ffffff;
+	background-image: none !important;
+	box-shadow: none !important;
+	border-radius: 1px !important;
+	border: 0px !important;
+}
+
+.cellInput table td {
+	background-color: #ffffff;
+	background-image: none !important;
+}
+
+.cellInput table .ui-state-highlight td {
+    background-color: inherit;
+}
+
+TD.ui-editable-column.ui-state-highlight.ui-cell-editing .ui-inputfield.ui-inputtext.ui-widget.ui-state-default.ui-corner-all {
+	transition: background 0.2s linear 0s;
+	background: #eeeeee !important; 
+}
+
+TD.ui-editable-column.ui-state-highlight.ui-cell-editing {
+	transition: background 0.2s linear 0s;
+	background: #eeeeee !important;
+}
+
+tbody td.notEditable{
+	background-color: #ffffff;
+}
+
+.text-left td:FIRST-CHILD {
+	text-align: left;
+}
+
+.ui-corner-all {
+	//border-radius: 0px !important;
+}
+
+.ui-inputfield.ui-state-focus, .ui-widget-content .ui-inputfield.ui-state-focus, .ui-widget-header .ui-inputfield.ui-state-focus {
+	//box-shadow: 0px 0px 2px rgb(251, 203, 9), 0px 2px 2px rgb(143, 143, 143) inset;
+}
+
+.ui-button1 {
+	font-weight: 300;
+	font-family: 'Lucida Grande', Arial, sans-serif;
+	  color: white;
+  text-align: center;
+  text-decoration: none;
+  text-shadow: 0 1px #154c86;
+  background-color: #247edd;
+  background-clip: padding-box;
+  border: 1px solid;
+  border-color: #1c65b2 #18589c #18589c;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px rgba(255, 255, 255, 0.4), 0 1px 2px rgba(0, 0, 0, 0.2);
+  box-shadow: inset 0 1px rgba(255, 255, 255, 0.4), 0 1px 2px rgba(0, 0, 0, 0.2);
+  background-image: -webkit-linear-gradient(top, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0) 50%, rgba(0, 0, 0, 0.12) 51%, rgba(0, 0, 0, 0.04));
+  background-image: -moz-linear-gradient(top, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0) 50%, rgba(0, 0, 0, 0.12) 51%, rgba(0, 0, 0, 0.04));
+  background-image: -o-linear-gradient(top, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0) 50%, rgba(0, 0, 0, 0.12) 51%, rgba(0, 0, 0, 0.04));
+  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0) 50%, rgba(0, 0, 0, 0.12) 51%, rgba(0, 0, 0, 0.04));
+}
+
+.ui-button1:hover {
+  background-color: #1a74d3;
+}
+
+.ui-button1:active {
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 0 -1px #154c86;
+  background: #1f71c8;
+  border-color: #113f70 #154c86 #1c65b2;
+  -webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2), 0 1px rgba(255, 255, 255, 0.4);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2), 0 1px rgba(255, 255, 255, 0.4);
+  background-image: -webkit-linear-gradient(top, #1a5da5, #3a8be0);
+  background-image: -moz-linear-gradient(top, #1a5da5, #3a8be0);
+  background-image: -o-linear-gradient(top, #1a5da5, #3a8be0);
+  background-image: linear-gradient(to bottom, #1a5da5, #3a8be0);
+}
+
+.ui-datatable-subtable-header, .ui-datatable tbody td.ui-datatable-subtable-header {
+	color: black;
+	border: 0px;
+}
+
+tr.ui-widget-header {
+	border: 0px;
+}
+
+.ui-datatable tbody .td1 {
+	border-style: none;
+}
+
+.ui-datatable.borderless .ui-datatable-data tr,
+.ui-datatable.borderless .ui-datatable-data-empty tr,
+.ui-datatable.borderless .ui-datatable-data td,
+.ui-datatable.borderless .ui-datatable-data-empty td,
+.borderless thead th,
+.borderless tbody{
+    border-style: none;
+    background: none;
+}
+
+.invoiceTable thead th {
+	border-bottom: 1px solid black !important;
+	-moz-box-sizing: border-box;
+}
+
+.invoiceTable thead th,
+.invoiceTable tr,
+.invoiceTable td{
+		font-family: Arial, sans-serif;
+		font-size: 14px !important;
+		padding: 2px 10px !important;
+}
+
+td.textLeftTable {
+	text-align: left;
+}
+
+.ui-datatable tbody td.wrap {
+    white-space: normal;
+}
+
+.companyLink {
+	border: none;
+	height: 0px;
+	margin-top: -18px;
+	margin-left: -20px;
+}
+
+hr.style {
+    border: 0;
+    height: 1px;
+    background-image: -webkit-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0)); 
+    background-image:    -moz-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0)); 
+    background-image:     -ms-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0)); 
+    background-image:      -o-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0)); 
+}
+
+a, button, a:visited, button:visited, a:focus, button:focus, a:active, button:active, a:hover, button:hover{
+    outline:0 none !important;
+}
+
+.grad ul li.ui-state-active {
+	//box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5) inset, 0px 1px 2px rgba(0, 0, 0, 0.05) !important;
+}
+
+.ui-datatable.invoiceTable th {
+	white-space: normal;
+	box-shadow: none;
+}
+
+.tableWhiteSpace th {
+	white-space: normal !important;
+}
+
+.orderTable th {
+	background-image: -moz-linear-gradient(center top , rgb(255, 255, 255), rgb(230, 230, 230)) !important;
+	color: rgb(51, 51, 51) !important;
+	text-shadow: 0px 1px 1px rgba(255, 255, 255, 0.75) !important;
+}
+
+.adminPanel {
+    margin:20px auto;
+    width: 1020px;
+}
+
+.adminPanelButton {
+    margin: 5px;
+}
+
+
+#top-link-block.affix-top {
+    position: absolute; /* allows it to "slide" up into view */
+    bottom: -82px; /* negative of the offset - height of link element */
+    right: 30px; /* padding from the right side of the window */
+}
+#top-link-block.affix {
+    position: fixed; /* keeps it on the bottom once in view */
+    bottom: 18px; /* height of link element */
+    right: 30px; /* padding from the left side of the window */
+}
+
+.stockSpinner input {
+    width: 50px;
+}
+
+.ui-selectonemenu .ui-selectonemenu-trigger {
+    width: 27px;
+}
+
+.logoutLink {
+    background-image: url("../images/logout-icon.png");
+    background-size: 20px;
+    background-repeat: no-repeat;
+    padding: 0px 10px 0px 20px;
+}
+
+.invoiceTableHeaderRow td{
+    font-weight: bold;
+    border-width: 0px !important;
+    color: white;
+    background: linear-gradient(to bottom, #7d7e7d 0%,#0e0e0e 100%); /* W3C */
+}
+
+.invoiceTableFooterColumn {
+    color: white !important;
+    background: linear-gradient(to bottom, #7d7e7d 0%,#0e0e0e 100%) !important; /* W3C */
+    border-radius: 0px !important;
+    text-shadow: none !important;
+}
+
+.stockInvoiceTable td:nth-child(2) {
+    width: 20px;
+}
+
+#mainContainer {
+    width: 1000px;
+    margin: 50px;
+}
+
+#rightPanel {
+    width: 350px;
+    margin-top: 50px;
+}
+
+.btn {
+    text-shadow: none !important;
+    box-shadow: none !important;
+}
+
+.newTableHeader th {
+    font-weight: bold !important;
+    border-width: 0px !important;
+    color: white !important;
+    background: linear-gradient(to bottom, #7d7e7d 0%,#0e0e0e 100%) !important; /* W3C */
+
+    text-shadow: none !important;
+    border-radius: 0px !important;
+}

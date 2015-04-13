@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/forms.xhtml"
+                >
+        
+                <ui:define name="title"><h:outputText value="Order Confirmation" /></ui:define>
+        
+        <ui:define name="content">
+        <h:form id="form" styleClass="form">
+        
+        	<div style="width: 20cm; margin: 0px auto; min-height: 22cm; position: relative;">
+			<table border="0" cellpadding="1" cellspacing="1" style="width: 100%;">
+				<tbody>
+					<tr>
+						<td style="width: 25%;">
+							<span style="font-size: 48px;"><p:graphicImage url="/images/logo-small.gif" width="100px"/><br />
+							</span></td>
+						<td>
+							<p style="text-align: center;">
+								<span style="font-size: 16px;"><strong>SALDUS WELDING SIA<br />
+								</strong></span></p>
+							<p style="text-align: center;">
+								<span style="font-size: 16px;"><strong>ORDER CONFIRMATION<br />
+								</strong></span></p>
+						</td>
+						<td style="text-align: right; width: 25%;" valign="top">
+							Doc.No.:SW2036</td>
+					</tr>
+				</tbody>
+			</table>
+			<hr />
+			<table border="0" cellpadding="1" cellspacing="1" style="width: 100%;">
+				<tbody>
+					<tr>
+						<td>
+							<table border="0" cellpadding="1" cellspacing="1" style="width: 100%;">
+								<tbody>
+									<tr>
+										<td>
+											Company:</td>
+										<td>
+											#{orderBean.currentOrder.orderData.company}</td>
+									</tr>
+									<tr>
+										<td style="width: 150px;">
+											Purchase Order Nr:</td>
+										<td>
+											#{orderBean.currentOrder.orderData.ordernr}</td>
+									</tr>
+									<tr>
+										<td>
+											Marking:</td>
+										<td>
+											#{orderBean.currentOrder.orderData.marking}</td>
+									</tr>
+									<tr>
+										<td>
+											Order Date:</td>
+										<td>
+											#{orderBean.currentOrder.orderData.odate}</td>
+									</tr>
+									<tr>
+										<td>
+											Order Confirmation No.:</td>
+										<td>
+											#{orderBean.currentOrder.orderData.ocnr}</td>
+									</tr>
+									<tr>
+										<td>
+											Delivery Date:</td>
+										<td>
+											#{orderBean.currentOrder.orderData.ddate}</td>
+									</tr>
+									<tr>
+										<td>
+											Delivery Address:</td>
+										<td>
+											#{orderBean.formatAddress(orderBean.findAddress(orderBean.currentOrder.orderData.dcompany))}</td>
+									</tr>
+									<tr>
+										<td>
+											Delivery Terms:</td>
+										<td>
+											#{orderBean.currentOrder.orderData.dterms}</td>
+									</tr>
+									<tr>
+										<td>
+											Currency:</td>
+										<td>
+											#{orderBean.currentOrder.orderData.currency}</td>
+									</tr>
+								</tbody>
+							</table>
+						</td>
+						<td style="width: 200px;">
+							From:Santa Fridrihsone<br />
+							Dir. Phone: +371 26546871<br />
+							Dir. Phone2: +47 70026507<br />
+							e-mail:santa@gjerde.lv<br />
+							<br />
+							Contact Person: #{orderBean.currentOrder.orderData.cperson}<br />
+							Phone: #{orderBean.currentOrder.orderData.cphone}<br />
+							Fax: #{orderBean.currentOrder.orderData.cfax}<br />
+							e-mail: #{orderBean.currentOrder.orderData.cemail}</td>
+					</tr>
+				</tbody>
+			</table>
+			<p>
+				&nbsp;</p>
+			<p>
+				In reply to your Purchase Order, we are pleased to confirm:</p>
+			<p>
+				
+				 <p:dataTable var="p" value="#{orderBean.currentOrder.orderData.p}" style="border: 1px;" styleClass="formTable">
+									<p:column headerText="Product No.">
+										#{p.pno}
+									</p:column>
+									<p:column headerText="Desc." styleClass="wrap">
+										#{p.desc}
+									</p:column>
+									<p:column headerText="Pcs.">
+										#{p.pcs}
+									</p:column>
+									<p:column headerText="Price">
+										#{p.price}
+									</p:column>
+									<p:column headerText="Total Price">
+										#{invoiceBean.setScale(orderBean.calculatePrice(p), 2)}
+									</p:column>
+								</p:dataTable>
+				
+				
+				&nbsp;</p>
+			<table border="0" cellpadding="1" cellspacing="1" style="width: 100%;">
+				<tbody>
+					<tr>
+						<td style="text-align: right; padding-right: 70px;">
+							<strong>Total amount #{orderBean.currentOrder.orderData.currency}</strong></td>
+						<td style="width: 150px; text-align:center;">
+							<strong>#{invoiceBean.setScale(orderBean.currentOrder.orderData.tot, 2)}</strong></td>
+					</tr>
+				</tbody>
+			</table>
+			<p>
+				Specification:<br />
+				#{orderBean.currentOrder.orderData.spec}<br />
+				&nbsp;</p>
+			</div>
+        </h:form>
+        </ui:define>
+        
+        <ui:define name="footer">
+        <p>
+				Best Regards,<br />
+				Santa Fridrihsone</p>
+			<p class="f" style="text-align: center;">
+				<span style="color: rgb(169, 169, 169);"><strong>SIA Saldus Welding, LV 48503007113</strong><br />
+				Jaunsandes, Saldus pagasts, Saldus novads LV-3801, Latvia.<br />
+				Tel: +371 26546871 Email: santa@gjerde.lv<br />
+				A/S SWEDBANK, SWIFT HABA LV , konts IBAN LV23HABA0551003381217<br />
+				</span></p>
+        </ui:define>
+        
+</ui:composition>

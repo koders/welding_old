@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/general2.xhtml">
+        
+        <ui:define name="title"><h:outputText value="Edit Order" /></ui:define>
+        
+        <ui:define name="content">
+        <h:form id="form">
+        	<p:remoteCommand name="gatis" autoRun="true" rendered="#{orderBean.currentOrder.t == 3}" actionListener="#{orderBean.msg('Diemžēl, šeit ir pabijis Gatis.')}" />
+
+			<!-- <div style="font-size:40px; background: #ddd; color: #333; text-shadow: 1px 1px white, -1px -1px #444; height: 50px;">
+				<div style="float:left;">
+				Order Creation 
+				</div>
+				<div style="float:left; color:#fff">
+				 Production  
+				</div>
+				<div style="float:left;">
+				 Order Completed
+				</div>
+			</div> -->
+			
+			<p:panel id="panel" style="width:1000px; margin: 0px auto; border: 0px;">
+				<p:panelGrid columns="2" style="width: 750px; margin:10px auto;" styleClass="newOrder">
+					<h:outputText value="Company:"/>
+				 	<h:outputText value="#{orderBean.companySelected.name}" />
+				 	
+				 	<h:outputText value="Purchase Order Number:"/>
+				 	<h:outputText value="#{orderBean.companySelected.onr}" />
+				 	
+				 	<h:outputText value="Order Confirmation Number:"/>
+				 	<h:outputText value="#{orderBean.currentOrder.orderData.ocnr}"/>
+				 	
+				 	<h:outputText value="Order Date:"/>
+				 	<h:outputText value="#{orderBean.currentOrder.orderData.odate}" />
+				 	
+				 	<h:outputText value="Order Delivery Date:"/>
+				 	<h:outputText value="#{orderBean.currentOrder.orderData.ddate}" />
+				 	
+				 	<h:outputText value="Specification:"/>
+				 	<h:outputText value="#{orderBean.currentOrder.orderData.spec}" />
+				 	
+				 	<h:outputText value="Production Specification:"/>
+				 	<p:inputTextarea rendered="#{orderBean.currentOrder.t == 1}" value="#{orderBean.currentOrder.orderData.spec2}" />
+				 	<h:outputText rendered="#{orderBean.currentOrder.t > 1}" value="#{orderBean.currentOrder.orderData.spec2}" />
+				 	
+				</p:panelGrid>
+		
+		
+				<p:dataTable id="table" value="#{orderBean.products}" var="product" emptyMessage="No Products"
+								 style="width: 950px; margin: 10px auto;">
+					<f:facet name="header">
+						Products
+					</f:facet>
+					<p:column headerText="Product Number" width="150">
+						<h:outputText value="#{product.pno}" />
+		            </p:column>
+					<p:column headerText="Description" width="500">
+							<h:outputText id="desc" value="#{product.desc}" />
+					</p:column>
+					<p:column headerText="Pcs."  width="100">
+						<h:outputText value="#{product.pcs}" />
+					</p:column>
+				</p:dataTable>
+				
+				<p:commandButton value="Back" action="back" rendered="#{orderBean.currentOrder.t > 1}" styleClass="btn btn-danger"/>
+				<p:commandButton value="Cancel" action="back" rendered="#{orderBean.currentOrder.t == 1}" styleClass="btn btn-danger"/>
+				<p:commandButton value="Save" actionListener="#{orderBean.saveEdited}" action="back" rendered="#{orderBean.currentOrder.t == 1}" styleClass="btn btn-primary">
+					<f:setPropertyActionListener target="#{orderBean.edit}" value="#{false}" />
+				</p:commandButton>
+				<p:commandButton value="Complete Order" action="back" rendered="#{orderBean.currentOrder.t == 1}" styleClass="btn btn-success">
+					<f:setPropertyActionListener target="#{orderBean.edit}" value="#{false}" />
+					<f:actionListener binding="#{orderBean.nextPhase()}" />
+					<f:actionListener binding="#{orderBean.saveEdited()}" />
+				</p:commandButton>
+				<p:commandButton value="Form 3" icon="ui-icon-search" style="float:right" action="form3" styleClass="btn btn-default"/>
+				<p:commandButton value="Form 2" icon="ui-icon-search" style="float:right" action="form2" styleClass="btn btn-default"/>
+			</p:panel>
+        </h:form>
+        </ui:define>
+        
+</ui:composition>

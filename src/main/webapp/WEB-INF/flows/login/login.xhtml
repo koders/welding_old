@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/login.xhtml">
+
+	<ui:define name="title">
+		<h:outputText value="Invoice System" />
+	</ui:define>
+
+	<ui:define name="content">
+		<h:form id="form">
+			<p:fieldset styleClass="loginfield animated fadeInDown">
+                                <p:growl id="messages" life="3000" />
+                                <p:graphicImage style="float:left; width: 150px;" value="/images/logo.gif" />
+                                <!--<p:graphicImage value="/images/welding-logo.png" style="margin-bottom: -40px; margin-left: 110px; width: 200px;" />-->
+                                <h:panelGrid id="logPanelGrid" style="margin: 10px auto; text-align: right">
+                                    <p:row>
+                                        <h3 id="loginHeader" style="margin: 10px;">Saldus Welding</h3>
+                                    </p:row>
+                                	<p:row>
+                                        <i class="glyphicon glyphicon-user" style="left:165px"/>
+                                        <p:column><p:inputText id="userName" value="#{userBean.userName}" label="User Name" title="Enter your User Name!" style="margin-bottom: 5px;"></p:inputText></p:column>
+                                        <p:watermark for="userName" value="Username" id="username_watermark" />
+                                    </p:row>
+                                    <p:row>
+                                        <i class="glyphicon glyphicon-lock" style="left:165px"/>
+                                        <p:column><p:password id="pass" value="#{userBean.password}" label="Password" title="Enter your password!" style="margin-bottom: 5px;"/></p:column>
+                                        <p:watermark for="pass" value="Password" id="password_watermark" />
+                                    </p:row>
+                                    <p:row>
+                                    	<p:column><h:outputText value="" /></p:column>
+                                        <p:column>
+	                                        <p:commandButton id="submitButton" update="form" actionListener="#{userBean.userAuthentication}" icon="ui-icon-check" value="Sign In">
+	                                        </p:commandButton>
+                                        </p:column>
+                                    </p:row>
+                                </h:panelGrid>
+                        </p:fieldset>
+			
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

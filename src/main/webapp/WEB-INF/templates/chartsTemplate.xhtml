@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+          xmlns:h="http://java.sun.com/jsf/html"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+      
+<f:view contentType="text/html">
+
+        <h:head>
+                <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+                <title><ui:insert name="title" /></title>
+                <!-- <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro|Lato|Ubuntu' rel='stylesheet' type='text/css'/> -->
+				<link rel="stylesheet" href="${request.contextPath}/css/admin.css" type="text/css" />
+				<link rel="stylesheet" href="${request.contextPath}/css/style.css" type="text/css" />
+                <script type="text/javascript" src="${request.contextPath}/js/highcharts/highcharts.js"></script>
+                <script type="text/javascript" src="${request.contextPath}/js/highcharts/themes/gray.js"></script>
+        </h:head>
+        
+        <h:body id="body">
+
+		<div id="container">
+				
+	        	<div id="header"> 
+	        		<p:graphicImage value="/images/welding-logo.png" style="margin-bottom: -10px; width: 350px;" />
+	        		<p:graphicImage value="/images/gjerde-logo2.jpg" style="float:right; width: 190px;" />
+	        		<p:ajaxStatus id="ajaxStatusPanel" style="float: right;" >  
+					    <f:facet name="start">  
+					        <h:graphicImage value="/images/loading.gif" style="position: absolute; left:50%; top:40%; height:75px; z-index: 99999;"/>
+					    </f:facet>  
+					      
+					    <f:facet name="complete">  
+					        <h:outputText value="" />  
+					    </f:facet>  
+				    </p:ajaxStatus>
+				    
+				    <h:form rendered="#{p:ifGranted('ROLE_USER')}">
+					    <p:outputPanel styleClass="head" >
+				        	<h:outputText value="Welcome, "/>
+				        	<h:outputText style="font-weight: bold;" value="#{userBean.userName}"/>
+				        	<h:outputText value="  |  "/>
+				        	<h:commandLink value="Logout" actionListener="#{userBean.logout}" />
+			        	</p:outputPanel>
+			        	<p:tabMenu activeIndex="#{administrationBean.activeIndex}" style="clear:both;" styleClass="grad" >  
+						    <p:menuitem value="Orders" >  
+						    	<f:setPropertyActionListener target="#{administrationBean.activeIndex}" value="0"></f:setPropertyActionListener>
+						    </p:menuitem>
+						    <p:menuitem value="Administration" >
+						    	<f:setPropertyActionListener target="#{administrationBean.activeIndex}" value="1"></f:setPropertyActionListener>
+						    </p:menuitem>
+						    <p:menuitem value="Invoices" >
+						    	<f:setPropertyActionListener target="#{administrationBean.activeIndex}" value="2"></f:setPropertyActionListener>
+						    </p:menuitem>
+						    <p:menuitem value="Statistics" >
+						    	<f:setPropertyActionListener target="#{administrationBean.activeIndex}" value="3"></f:setPropertyActionListener>
+						    </p:menuitem>   
+						</p:tabMenu>
+					</h:form>
+	        	</div>
+	        	
+	        	<div id="content">
+	                <ui:insert name="content" />
+	        	</div>
+	        	
+	        	<div id="footer"></div>
+        	</div> 
+        </h:body>
+
+</f:view>
+</html>

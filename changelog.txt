@@ -1,0 +1,17 @@
+30.08.2014
+*Changed design on buttons, table headers
+*Added animation on login screen
+*Dashboard tab - added top customers bar chart
+
+27.08.2014
+*Fixed bug with product sorting, now sorting by product number instead of id
+*Changed invoice table header and footer design
+*Stock tab - invoice dialog wider (1200px)
+*Stock tab - invoice dialog table columns auto width
+*Stock tab - invoice dialog opens on totalShipped click instead of row select
+
+24.08.2014
+*Added pagination to packing list
+*Some refactoring, mainly in invoice service
+*Stock item shows invoices instead of orders
+*Added logout icon

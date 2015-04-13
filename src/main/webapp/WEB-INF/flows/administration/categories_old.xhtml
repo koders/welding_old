@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/general.xhtml">
+        
+        <ui:define name="title"><h:outputText value="Products" /></ui:define>
+
+        <ui:define name="head">
+            <link rel="stylesheet" href="${request.contextPath}/css/bootstrap-glyphicons.css" type="text/css" />
+            <style type="text/css">
+
+                .tree {
+                    min-height:20px;
+                    padding:19px;
+                    margin-bottom:20px;
+                    background-color:#fbfbfb;
+                    border:1px solid #999;
+                    -webkit-border-radius:4px;
+                    -moz-border-radius:4px;
+                    border-radius:4px;
+                    -webkit-box-shadow:inset 0 1px 1px rgba(0, 0, 0, 0.05);
+                    -moz-box-shadow:inset 0 1px 1px rgba(0, 0, 0, 0.05);
+                    box-shadow:inset 0 1px 1px rgba(0, 0, 0, 0.05)
+                }
+                .tree li {
+                    list-style-type:none;
+                    margin:0;
+                    padding:10px 5px 0 5px;
+                    position:relative
+                }
+                .tree li::before, .tree li::after {
+                    content:'';
+                    left:-20px;
+                    position:absolute;
+                    right:auto
+                }
+                .tree li::before {
+                    border-left:1px solid #999;
+                    bottom:50px;
+                    height:100%;
+                    top:0;
+                    width:1px
+                }
+                .tree li::after {
+                    border-top:1px solid #999;
+                    height:20px;
+                    top:25px;
+                    width:25px
+                }
+                .tree li span {
+                    -moz-border-radius:5px;
+                    -webkit-border-radius:5px;
+                    border:1px solid #999;
+                    display:inline-block;
+                    padding:3px 8px;
+                    text-decoration:none
+                }
+                .tree li.parent_li>span {
+                    cursor:pointer
+                }
+                .tree>ul>li::before, .tree>ul>li::after {
+                    border:0
+                }
+                .tree li:last-child::before {
+                    height:30px
+                }
+                .tree li.parent_li>span:hover, .tree li.parent_li>span:hover+ul li span {
+                    background:#eee;
+                    border:1px solid #94a0b4;
+                    color:#000
+                }
+
+                .tree li .category {
+                    width: 100%;
+                }
+            </style>
+
+            <script type="text/javascript">
+                $(function () {
+                    $('.tree li:has(ul)').addClass('parent_li').find(' > span').attr('title', 'Collapse this branch');
+                    $('.tree li.parent_li > span').on('click', function (e) {
+                        var children = $(this).parent('li.parent_li').find(' > ul > li');
+                        if (children.is(":visible")) {
+                            children.hide('fast');
+                            $(this).attr('title', 'Expand this branch').find(' > i').addClass('icon-plus-sign').removeClass('icon-minus-sign');
+                        } else {
+                            children.show('fast');
+                            $(this).attr('title', 'Collapse this branch').find(' > i').addClass('icon-minus-sign').removeClass('icon-plus-sign');
+                        }
+                        e.stopPropagation();
+                    });
+                });
+            </script>
+        </ui:define>
+
+        <ui:define name="content">
+        <h:form id="form">
+            <h1 class="text-center">Manage Categories</h1>
+        	<p:growl id="growl" showDetail="false" life="3000" autoUpdate="true" />
+			<!--<p:commandButton value="Add Category" icon="ui-icon-plus" onsuccess="newDialog.show()" style=" margin: 10px;"/>-->
+			<!--<p:commandButton value="Add Products" icon="ui-icon-plus" onsuccess="addProducts.show()" style=" margin: 10px;"/>-->
+			<!--<p:commandButton value="Back" action="back" icon="ui-icon-arrowreturnthick-1-w" style="margin: 10px;" />-->
+
+
+
+
+
+
+
+
+
+            <div class="tree" style="width: 800px;">
+                <p:commandLink value="Add Category" icon="ui-icon-plus" onsuccess="newDialog.show()" actionListener="#{administrationBean.setActiveCategory(null)}" style=" margin: 10px;"/>
+                <ul>
+                <ui:repeat var="c" value="#{administrationBean.getMotherCategories()}">
+                    <li>
+                        <span class="category">
+                            <strong>#{c.name}
+                                <p:commandLink style="float: right" actionListener="#{administrationBean.removeCategory(c)}" update=":form">
+                                    <i class="glyphicon glyphicon-remove"></i>
+                                </p:commandLink>
+                            </strong>
+                            <span class="badge pull-right">#{administrationBean.countProductsInCategory(c)}</span>
+                            <p:commandLink value="Add SubCategory" icon="ui-icon-plus" onsuccess="newDialog.show()" actionListener="#{administrationBean.setActiveCategory(c)}" style=" margin: 10px;"/>
+
+                        </span>
+                        <ul>
+                            <ui:repeat value="#{c.products}" var="c2">
+                                <li>
+                                    <span class="category">#{c2.pno} #{c2.desc}
+                                        <p:commandLink style="float: right" actionListener="#{administrationBean.removeProductFromCategory(c,c2)}" update=":form">
+                                            <i class="glyphicon glyphicon-remove"></i>
+                                        </p:commandLink>
+                                    </span>
+                                </li>
+                            </ui:repeat>
+                            <ui:repeat var="c1" value="#{c.subCategories}">
+                                <li>
+                                    <span class="category">
+                                        <strong>#{c1.name}
+                                            <p:commandLink style="float: right" actionListener="#{administrationBean.removeCategory(c1)}" update=":form">
+                                                <i class="glyphicon glyphicon-remove"></i>
+                                            </p:commandLink>
+                                        </strong>
+                                        <span class="badge pull-right">#{administrationBean.countProductsInCategory(c1)}</span>
+                                        <p:commandLink value="Add Products" icon="ui-icon-plus" onsuccess="addProducts.show()" actionListener="#{administrationBean.setActiveCategory(c1)}" style=" margin: 10px;"/>
+                                    </span>
+                                    <ul>
+                                    <ui:repeat value="#{c1.products}" var="c2">
+                                        <li>
+                                            <span class="category">#{c2.pno} #{c2.desc}
+                                                <p:commandLink style="float: right" actionListener="#{administrationBean.removeProductFromCategory(c1,c2)}" update=":form">
+                                                    <i class="glyphicon glyphicon-remove"></i>
+                                                </p:commandLink>
+                                            </span>
+                                        </li>
+                                    </ui:repeat>
+                                    </ul>
+                                </li>
+                            </ui:repeat>
+                        </ul>
+                    </li>
+                </ui:repeat>
+                </ul>
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+			<p:dialog widgetVar="delDialog" modal="true" header="Delete Product" resizable="false">
+				<p:panelGrid styleClass="noBorder">
+				<p:row>
+					<p:column colspan="2"><h:outputText value="Are you sure you want to delete this product from this categpry?" /></p:column>
+				</p:row>
+				<p:row>
+					<p:column><p:commandButton value="Yes" actionListener="#{administrationBean.deleteProductFromCategory}" onclick="delDialog.hide()" update="form" />
+					<p:commandButton value="No" onclick="delDialog.hide()"/></p:column>
+				</p:row>
+				</p:panelGrid>
+			</p:dialog>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			<p:dialog id="newDialog" widgetVar="newDialog" modal="true" header="Edit Category" resizable="false" dynamic="true">
+				<p:panelGrid columns="2">
+					<h:outputText value="Category Name"/>
+					<p:inputText value="#{administrationBean.category.name}" />
+					<h:outputText value="Description"/>
+					<p:inputTextarea cols="30" rows="8" value="#{administrationBean.category.description}" />
+				</p:panelGrid>
+				<p:commandButton value="Save" actionListener="#{administrationBean.saveCategory}" onclick="newDialog.hide()" update="form"/>
+				<p:commandButton value="Calcel" onclick="newDialog.hide()" update="form"/>
+			</p:dialog>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <p:dialog id="addProducts" widgetVar="addProducts" modal="false" header="Add Products" resizable="true">
+                <p:dataTable var="p" value="#{administrationBean.productModel}" style="width:800px; margin: 10px;" selection="#{administrationBean.selectedProducts}" scrollable="true" scrollHeight="500">
+
+                    <p:column selectionMode="multiple" width="5%" />
+
+                    <p:column headerText="Product" width="15%">
+                        <h:outputText value="#{p.pno}" />
+                    </p:column>
+
+                    <p:column headerText="Description" width="80%">
+                        <h:outputText value="#{p.desc}" />
+                    </p:column>
+
+                </p:dataTable>
+                <p:commandButton value="Save" actionListener="#{administrationBean.addProducts()}" onclick="addProducts.hide()" update="form"/>
+                <p:commandButton value="Calcel" onclick="addProducts.hide()" onsuccess="javascript:window.location.reload()" update="form"/>
+            </p:dialog>
+
+        </h:form>
+        </ui:define>
+        
+</ui:composition>
