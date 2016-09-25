@@ -244,7 +244,7 @@ public class InvoiceDTO {
             } catch (Exception e) {
                 continue;
             }
-            invoice.setAmount(invoice.getAmount() + Double.parseDouble(p.getPrice()) * Double.parseDouble(p.getPcs()));
+            invoice.setAmount(invoice.getAmount() + Double.parseDouble(p.getStockPrice()) * Double.parseDouble(p.getPcs()));
         }
     }
 	
@@ -322,6 +322,12 @@ public class InvoiceDTO {
 		if(invoice.getDeliveryInfo() != null)
 			invoice.setDeliveryInfo(getCompanyData(invoice.getDeliveryInfo().getName()));
 		invoice.setDelivery(gson.toJson(invoice.getDeliveryInfo()));
+    for(Product p: products) {
+      if(p.getStockPrice() == null) {
+        p.setStockPrice(p.getPrice());
+        p.setStockTPrice(p.getTprice());
+      }
+    }
 		invoice.setProductData(products);
 		invoice.setProducts(gson.toJson(products));
 		invoice.setTotalAmount(invoice.getAmount() + invoice.getAmount() * invoice.getVat());
@@ -332,9 +338,9 @@ public class InvoiceDTO {
 	
 	public void setDataFromOrder() {
 		//invoice.getDeliveryInfo().setAddress(trimOrderAddress(order.getOrderData().getDaddres()));
-		invoice.setDelivery(gson.toJson(invoice.getDeliveryInfo()));
-		invoice.setPurchaseNumber(getOrder().getOrderData().getOrdernr());
-		invoice.setMarking(getOrder().getOrderData().getMarking());
+    invoice.setDelivery(gson.toJson(invoice.getDeliveryInfo()));
+    invoice.setPurchaseNumber(getOrder().getOrderData().getOrdernr());
+    invoice.setMarking(getOrder().getOrderData().getMarking());
 		invoice.setCurrency(getOrder().getOrderData().getCurrency());
 		invoice.setRef(getOrder().getOrderData().getCperson());
 	}
@@ -345,12 +351,26 @@ public class InvoiceDTO {
 			setDataFromOrder();
 		}
 		service.saveNewProducts(products);
-		service.saveNewPerson(invoice.getContactPerson());
-		service.saveNewPerson(invoice.getRef());
+    service.saveNewPerson(invoice.getContactPerson());
+    service.saveNewPerson(invoice.getRef());
 		invoiceDao.update(invoice);
-		Utils.flashMsg("Invoice updated!");
+    Utils.flashMsg("Invoice updated!");
 		setSaveAction("back");
 	}
+
+    public void saveStockInvoice() {
+        invoice = stockInvoice;
+        products = stockInvoice.getProductData();
+        saveEdited();
+        recalculateStockAmount(stockInvoice);
+    }
+
+    public void recalculateStockAmount(InvoiceEntity stockInvoice) {
+        stockInvoice.setAmount(0.00);
+        for(Product p : stockInvoice.getProductData()) {
+            stockInvoice.setAmount(stockInvoice.getAmount() + Double.parseDouble(p.getStockPrice()) * Double.parseDouble(p.getPcs()));
+        }
+    }
 	
 	public void delete() {
 		invoiceDao.delete(invoiceToDelete);
@@ -418,6 +438,13 @@ public class InvoiceDTO {
 		if(product == null || product.getPcs() == null || product.getPrice() == null || product.getPcs().equals("") || product.getPrice().equals(""))
 			return new BigDecimal(0.00);
 		Double result = Double.parseDouble(product.getPcs()) * Double.parseDouble(product.getPrice());
+		return new BigDecimal(result).setScale(2, RoundingMode.HALF_UP);
+	}
+
+	public BigDecimal calculateStockPrice(Product product) {
+		if(product == null || product.getPcs() == null || product.getStockPrice() == null || product.getPcs().equals("") || product.getStockPrice().equals(""))
+			return new BigDecimal(0.00);
+		Double result = Double.parseDouble(product.getPcs()) * Double.parseDouble(product.getStockPrice());
 		return new BigDecimal(result).setScale(2, RoundingMode.HALF_UP);
 	}
 

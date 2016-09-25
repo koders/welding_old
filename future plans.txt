@@ -1,2 +1,7 @@
 dashboard
 event history
+
+invoice update bug after creation
+printable order list
+creation product search on add product
+stock product price atsevišķi

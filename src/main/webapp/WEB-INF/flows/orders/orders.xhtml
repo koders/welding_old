@@ -24,6 +24,7 @@
 				<f:setPropertyActionListener target="#{orderBean.currentOrder}" value="#{null}" />
                 <f:setPropertyActionListener target="#{orderBean.offer}" value="#{false}" />
 			</p:commandButton>
+			<p:commandButton value="Print" style="margin: 10px;" action="ordersPrint" styleClass="btn btn-default" />
 
 			<div style="width:35px; float:right; margin-top: 7px;">
 				<p:commandLink id="search" style="margin: 0px auto;" actionListener="#{orderBean.search}" update="table">

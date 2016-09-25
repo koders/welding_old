@@ -12,7 +12,7 @@
 				</property>
 				<property name="username" value="root">
 				</property>
-				<property name="password" value="">
+				<property name="password" value="admin">
 				</property>
         </bean>                 
         

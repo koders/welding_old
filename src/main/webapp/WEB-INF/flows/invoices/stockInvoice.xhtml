@@ -77,10 +77,10 @@
 					#{invoiceBean.setScale(invoiceBean.calculateTotalWeight(p), 2)}
 				</p:column>
 				<p:column headerText="Price #{invoiceBean.stockInvoice.currency}">
-					#{invoiceBean.setScale(p.price, 2)}
+					#{invoiceBean.setScale(p.stockPrice, 2)}
 				</p:column>	
 				<p:column headerText="Total Price #{invoiceBean.stockInvoice.currency}">
-					#{invoiceBean.setScale(orderBean.calculatePrice(p), 2)}
+					#{invoiceBean.setScale(orderBean.calculateStockPrice(p), 2)}
 				</p:column>
 			</p:dataTable>
 			

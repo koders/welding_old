@@ -198,6 +198,13 @@ public class OrderDTO implements Serializable {
 		Double result = Double.parseDouble(product.getPcs()) * Double.parseDouble(product.getPrice());
 		return new BigDecimal(result).setScale(2, RoundingMode.HALF_UP);
 	}
+
+  public BigDecimal calculateStockPrice(Product product) {
+    if(product == null || product.getPcs() == null || product.getStockPrice() == null || product.getPcs().equals("") || product.getStockPrice().equals(""))
+      return new BigDecimal(0.00);
+    Double result = Double.parseDouble(product.getPcs()) * Double.parseDouble(product.getStockPrice());
+    return new BigDecimal(result).setScale(2, RoundingMode.HALF_UP);
+  }
 	
 	public void saveNewProducts() {
 		for(Product p: products) {
@@ -597,7 +604,11 @@ public class OrderDTO implements Serializable {
 				public int compare(OrderEntity x1, OrderEntity x2) {
 					if(x2.getOrderData() == null || x2.getOrderData().getOcnr() == null || x1.getOrderData() == null)
 						return 0;
-					return x2.getOrderData().getOcnr().compareTo(x1.getOrderData().getOcnr());
+					try {
+						return Long.parseLong(x2.getOrderData().getOcnr()) > Long.parseLong(x1.getOrderData().getOcnr()) ? 1 : -1;
+					} catch (NumberFormatException e) {
+						return 0;
+					}
 				}
 			});
 		}
@@ -622,8 +633,12 @@ public class OrderDTO implements Serializable {
                 public int compare(OrderEntity x1, OrderEntity x2) {
                     if(x2.getOrderData() == null || x2.getOrderData().getOcnr() == null || x1.getOrderData() == null)
                         return 0;
-                    return x2.getOrderData().getOcnr().compareTo(x1.getOrderData().getOcnr());
-                }
+									try {
+										return Long.parseLong(x2.getOrderData().getOcnr()) > Long.parseLong(x1.getOrderData().getOcnr()) ? 1 : -1;
+									} catch (NumberFormatException e) {
+											return 0;
+									}
+								}
             });
         }
     }

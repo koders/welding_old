@@ -191,18 +191,18 @@
             </p:column>
             <p:column headerText="Price"  width="70">
                 <p:cellEditor>
-                    <f:facet name="output"><h:outputText value="#{product.price}" /></f:facet>
-                    <f:facet name="input"><p:inputText value="#{product.price}" onkeypress="if(event.keyCode == 13)this.blur()">
+                    <f:facet name="output"><h:outputText value="#{product.stockPrice}" /></f:facet>
+                    <f:facet name="input"><p:inputText value="#{product.stockPrice}" onkeypress="if(event.keyCode == 13)this.blur()">
                         <p:ajax event="blur" update="totalPrice"/>
                     </p:inputText></f:facet>
                 </p:cellEditor>
             </p:column>
             <p:column headerText="Total Price" width="70" styleClass="notEditable">
-                <h:outputText id="totalPrice" value="#{invoiceBean.calculatePrice(product)}" />
+                <h:outputText id="totalPrice" value="#{invoiceBean.calculateStockPrice(product)}" />
             </p:column>
 
         </p:dataTable>
-        <p:commandButton value="Generate"  action="stockInvoice" styleClass="pull-right btn btn-success" />
+        <p:commandButton value="Generate" actionListener="#{invoiceBean.saveStockInvoice()}" action="stockInvoice" styleClass="pull-right btn btn-success" />
     </h:form>
 </p:dialog>
 

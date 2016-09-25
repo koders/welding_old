@@ -7,9 +7,7 @@ import lv.welding.orders.dto.InvoiceDTO;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Rihards on 23.06.2014..
@@ -18,9 +16,11 @@ public class StatisticsService {
     AdministrationDTO administrationDTO;
     InvoiceDTO invoiceDTO;
 
-    private String fromDateString;
-    private String toDateString;
     DateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+    private String fromDateString = "01.01.1970";
+    private String toDateString = format.format(new Date());
+    private List<InvoiceEntity> invoices;
+    private Map<String, Map<String, Map<String, Integer>>> productStatisticsCache;
 
     public List<Product> findProductData(List<InvoiceEntity> invoices, List<ProductEntity> products) {
         List<Product> results = new ArrayList<Product>();
@@ -125,23 +125,25 @@ public class StatisticsService {
     }
 
     public Integer getProductCount(ProductModelEntity productModel, ProductSizeEntity productSize, ProductMaterialEntity productMaterial) {
-        Date dateFrom = null;
-        Date dateTo = null;
-        try {
-            dateFrom = format.parse(fromDateString);
-        } catch (Exception e) {
-            e.getStackTrace();
-        }
-        try {
-            dateTo = format.parse(toDateString);
-        } catch (Exception e) {
-            e.getStackTrace();
-        }
+        Date dateFrom = parseDate(toDateString);
+        Date dateTo = parseDate(fromDateString);
         return getProductCount(dateFrom, dateTo, productModel, productSize, productMaterial);
     }
 
+    public Date parseDate(String dateString) {
+        Date date = null;
+        try {
+            date = format.parse(dateString);
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
+        return date;
+    }
+
     public Integer getProductCount(Date dateFrom, Date dateTo, ProductModelEntity productModel, ProductSizeEntity productSize, ProductMaterialEntity productMaterial) {
-        List<InvoiceEntity> invoices = findInvoicesForInterval(dateFrom, dateTo);
+        if(invoices == null) {
+            invoices = findInvoicesForInterval(dateFrom, dateTo);
+        }
         List<ProductEntity> modelProducts = administrationDTO.getModelProducts(productModel, productSize, productMaterial);
         Integer result = 0;
         int add = 0;
@@ -161,6 +163,58 @@ public class StatisticsService {
             }
         }
         return result;
+    }
+
+    public Integer totalProductCountForSize(ProductSizeEntity productSize, ProductMaterialEntity productMaterial) {
+        int result = 0;
+        for(Map.Entry<String, Map<String, Integer>> entry: productStatisticsCache.get(productMaterial.getName()).entrySet()) {
+            result += entry.getValue().get(productSize.getName());
+        }
+        return result;
+    }
+
+    public Integer totalProductCountForModel(ProductModelEntity productModel, ProductMaterialEntity productMaterial) {
+        int result = 0;
+        for(Map.Entry<String, Integer> entry: productStatisticsCache.get(productMaterial.getName()).get(productModel.getName()).entrySet()) {
+            result += entry.getValue();
+        }
+        return result;
+    }
+
+    public Integer totalProductCountForMaterial(ProductMaterialEntity productMaterial) {
+        int result = 0;
+        for(Map.Entry<String, Map<String, Integer>> entry: productStatisticsCache.get(productMaterial.getName()).entrySet()) {
+            for(Map.Entry<String, Integer> entry1: entry.getValue().entrySet()) {
+                result += entry1.getValue();
+            }
+        }
+        return result;
+    }
+
+    public Integer getProductCountFromCache(ProductModelEntity productModel, ProductSizeEntity productSize, ProductMaterialEntity productMaterial) {
+        if(productStatisticsCache == null) {
+            initProductStatisticsCache();
+        }
+
+        return productStatisticsCache.get(productMaterial.getName()).get(productModel.getName()).get(productSize.getName());
+    }
+
+    private void initProductStatisticsCache() {
+        productStatisticsCache = new HashMap<String, Map<String, Map<String, Integer>>>();
+        for(ProductMaterialEntity pma: administrationDTO.getProductMaterials()) {
+            productStatisticsCache.put(pma.getName(), new HashMap<String, Map<String, Integer>>());
+            for(ProductModelEntity pmo: administrationDTO.getProductModels()) {
+                productStatisticsCache.get(pma.getName()).put(pmo.getName(), new HashMap<String, Integer>());
+                for(ProductSizeEntity ps: administrationDTO.getProductSizes()) {
+                    productStatisticsCache.get(pma.getName()).get(pmo.getName()).put(ps.getName(), getProductCount(pmo, ps, pma));
+                }
+            }
+        }
+    }
+
+    public void refreshStatistics() {
+        invoices = findInvoicesForInterval(parseDate(fromDateString), parseDate(toDateString));
+        initProductStatisticsCache();
     }
 
     public AdministrationDTO getAdministrationDTO() {
@@ -193,5 +247,13 @@ public class StatisticsService {
 
     public void setToDateString(String toDateString) {
         this.toDateString = toDateString;
+    }
+
+    public List<InvoiceEntity> getInvoices() {
+        return invoices;
+    }
+
+    public void setInvoices(List<InvoiceEntity> invoices) {
+        this.invoices = invoices;
     }
 }

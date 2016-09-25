@@ -9,9 +9,13 @@
 	<view-state id="orders">
 		<transition on="newOrder" to="newOrder" />
 		<transition on="continue" to="continueOrder" />
+		<transition on="ordersPrint" to="ordersPrint" />
 		<transition on="form1" to="form1" />
 		<transition on="form2" to="form2" />
 		<transition on="form3" to="form3" />
+	</view-state>
+
+	<view-state id="ordersPrint">
 	</view-state>
 
 	<view-state id="newOrder">
