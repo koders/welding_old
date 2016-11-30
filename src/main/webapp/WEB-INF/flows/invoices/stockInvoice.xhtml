@@ -8,16 +8,16 @@
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/templates/forms.xhtml"
                 >
-        
+
                 <ui:define name="title"><h:outputText value="Stock Invoice #{invoiceBean.stockInvoice.number}/#{invoiceBean.stockInvoice.year}" /></ui:define>
-        
+
         <ui:define name="content">
         <h:form id="form" styleClass="form" style="font-size: 14px !important; font-family: Tahoma !important; width: 20cm; margin: auto;">
-        	
+
         	<p:graphicImage value="/images/gjerde-logo-small.jpg" style="width: 100px; margin: 0px; float:left; margin-bottom: 10px; margin-top:-20px; position: absolute;" />
-        	
+
         	<div style="color: blue; font-size: 30px !important; font-family:'Helvetica Neue',sans-serif !important; margin: 10px auto; width: 300px; font-weight: bold;">Sia Saldus Welding</div>
-        	
+
         	<div style="float:left; width: 400px; clear: both; text-align: right;">
         		<h:outputText style="font-weight: bold; text-align: right;" value="Seller:" />
         		<div style="width: 250px; float:right; text-align: left; padding-left: 5px;">
@@ -28,7 +28,7 @@
         	<div style="width: 300px; float:right;">
         		<h:outputText escape="false" value="#{invoiceBean.replaceNewlines(invoiceBean.stockInvoice.sellerInfo.properties)}" />
         	</div> <br /><br /><br />
-        	
+
         	<div style="float:left; width:400px; clear: both; text-align: right;">
         		<h:outputText style="font-weight: bold;" value="Buyer:" />
         		<div style="width: 250px; float:right; text-align: left; padding-left: 5px;">
@@ -39,7 +39,7 @@
         	<div style="width: 300px; float:right;">
         		<h:outputText escape="false" value="#{invoiceBean.replaceNewlines(invoiceBean.stockInvoice.buyerInfo.properties)}" />
         	</div>
-        	
+
         	<div style="float:left; width:400px; clear: both; text-align: right;">
 	        	<h:outputText value="Delivery address:" style="font-weight: bold;" />
 	        	<div style="width: 250px; float:right; text-align: left; padding-left: 5px;">
@@ -47,7 +47,7 @@
 	        		<h:outputText escape="false" value="#{invoiceBean.replaceNewlines(invoiceBean.stockInvoice.deliveryInfo.address)}" /> <br /><br />
         		</div>
         	</div>
-        	
+
         	<div style="clear:both; float:left;">
         		<h:outputText value="Purchase No.: #{invoiceBean.stockInvoice.purchaseNumber}"/> <br />
         		<h:outputText value="Marking: #{invoiceBean.stockInvoice.marking}"/> <br />
@@ -57,9 +57,9 @@
         		<h:outputText value="Contact Person: #{invoiceBean.stockInvoice.contactPerson}"/> <br />
         		<h:outputText value="Tel: #{invoiceBean.stockInvoice.contactTel}"/>
         	</div>
-        	
+
         	<h1 style="font-family: Tahoma !important; text-align:center; font-weight: bold; padding-top: 10px; padding-bottom: 10px; clear:both;"><h:outputText value="STOCK INVOICE &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Nr. SW #{invoiceBean.stockInvoice.number}/#{invoiceBean.stockInvoice.year}" /></h1>
-        	
+
         	<p:dataTable var="p" value="#{invoiceBean.stockInvoice.productData}" styleClass="formTable borderless invoiceTable">
 				<p:column headerText="Product Nr.">
 					#{p.pno}
@@ -78,35 +78,35 @@
 				</p:column>
 				<p:column headerText="Price #{invoiceBean.stockInvoice.currency}">
 					#{invoiceBean.setScale(p.stockPrice, 2)}
-				</p:column>	
+				</p:column>
 				<p:column headerText="Total Price #{invoiceBean.stockInvoice.currency}">
 					#{invoiceBean.setScale(orderBean.calculateStockPrice(p), 2)}
 				</p:column>
 			</p:dataTable>
-			
-			
-			
-			
-        	
+
+
+
+
+
         	<div style="float: right; width:300px; margin-top: 15px; margin-right: 30px;">
         		<div style="text-align:right; width:200px; float:left;">
 					<h:outputText value="Amount #{invoiceBean.stockInvoice.currency}" /> <br />
 					<h:outputText value="VAT #{invoiceBean.setScale(invoiceBean.stockInvoice.vat * 100, 0)} %" /> <br />
 					<h:outputText value="Total Amount #{invoiceBean.stockInvoice.currency}" style="font-weight: bold;" /> <br /><br />
 				</div>
-				
-				<div style="width:100px; float:right; text-align: right;">					
-					<h:outputText value="#{invoiceBean.setScale(invoiceBean.stockInvoice.amount,2)}" /> <br />
-					<h:outputText value="#{invoiceBean.setScale(invoiceBean.stockInvoice.amount * invoiceBean.stockInvoice.vat, 2)}" style="font-weight: normal;" /> <br />
-					<h:outputText value="#{invoiceBean.setScale(invoiceBean.stockInvoice.amount + invoiceBean.stockInvoice.amount * invoiceBean.stockInvoice.vat,2)}" style="font-weight: bold;" /> <br /><br />
-				</div>					
+
+				<div style="width:100px; float:right; text-align: right;">
+					<h:outputText value="#{invoiceBean.setScale(invoiceBean.stockInvoice.stockAmount,2)}" /> <br />
+					<h:outputText value="#{invoiceBean.setScale(invoiceBean.stockInvoice.stockAmount * invoiceBean.stockInvoice.vat, 2)}" style="font-weight: normal;" /> <br />
+					<h:outputText value="#{invoiceBean.setScale(invoiceBean.stockInvoice.stockAmount + invoiceBean.stockInvoice.stockAmount * invoiceBean.stockInvoice.vat,2)}" style="font-weight: bold;" /> <br /><br />
+				</div>
 			</div>
-			
-			
-			
-			
-			
-			
+
+
+
+
+
+
 			<div style="margin:auto; width:400px; clear:both;">
         		<div style="text-align:right; width:300px; float:left;">
 					<h:outputText value="Netto weight" /> <br />
@@ -114,17 +114,17 @@
 					<h:outputText value="Packingmaterial #{invoiceBean.stockInvoice.pcs} #{invoiceBean.stockInvoice.otherType}" rendered="#{invoiceBean.stockInvoice.packingOther}" /> <br />
 					<h:outputText value="Brutto weight" />
 				</div>
-				<div style="width:100px; float:right; text-align: right;">		
-					<h:outputText value="#{invoiceBean.setScale(invoiceBean.stockInvoice.nettoWeight,2)} kg" /> <br />			
-					<h:outputText value="#{invoiceBean.setScale(invoiceBean.stockInvoice.plasticWeight,2)} kg" rendered="#{invoiceBean.stockInvoice.packingPlastic}" /> <br />			
+				<div style="width:100px; float:right; text-align: right;">
+					<h:outputText value="#{invoiceBean.setScale(invoiceBean.stockInvoice.nettoWeight,2)} kg" /> <br />
+					<h:outputText value="#{invoiceBean.setScale(invoiceBean.stockInvoice.plasticWeight,2)} kg" rendered="#{invoiceBean.stockInvoice.packingPlastic}" /> <br />
 					<h:outputText value="#{invoiceBean.setScale(invoiceBean.stockInvoice.otherWeight,2)} kg" rendered="#{invoiceBean.stockInvoice.packingOther}" style="float:right;" />
-					<h:outputText value="#{invoiceBean.stockInvoice.size}" rendered="#{invoiceBean.stockInvoice.packingOther}" style="float:right; left: 100px; position:relative; width: 0px;" /> <br />			
-					<h:outputText value="#{invoiceBean.setScale(invoiceBean.stockInvoice.bruttoWeight,2)} kg" style="clear:both; float:right;" />			
-				</div>					
+					<h:outputText value="#{invoiceBean.stockInvoice.size}" rendered="#{invoiceBean.stockInvoice.packingOther}" style="float:right; left: 100px; position:relative; width: 0px;" /> <br />
+					<h:outputText value="#{invoiceBean.setScale(invoiceBean.stockInvoice.bruttoWeight,2)} kg" style="clear:both; float:right;" />
+				</div>
 			</div><br style="clear:both;" /><br />
-			
-			
-			
+
+
+
 			<div style="margin:auto; width:700px;">
 				<div style="float:left; width: 400px;">
 					<h:outputText value="NOT TO BE PAID, FOR CUSTOM PURPOSE ONLY." /><br />
@@ -147,12 +147,12 @@
 					</div>
 				</div>
 			</div>
-			
+
 			<div style="clear: both;">
 				<h:outputText escape="false" value="#{invoiceBean.replaceNewlines(invoiceBean.stockInvoice.pvn)}" />
 			</div>
-        	
+
         </h:form>
         </ui:define>
-        
+
 </ui:composition>

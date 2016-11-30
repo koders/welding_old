@@ -13,9 +13,9 @@ import lv.welding.orders.models.base.BaseEntity;
 @Entity
 @Table(name="invoices")
 public class InvoiceEntity extends BaseEntity{
-	
+
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private Long number;
@@ -44,7 +44,7 @@ public class InvoiceEntity extends BaseEntity{
 	private String products;
 	@Transient
 	private List<Product> productData;
-	
+
 	private Double nettoWeight = 0.0;
 	private boolean packingPlastic;
 	private boolean packingOther;
@@ -54,7 +54,7 @@ public class InvoiceEntity extends BaseEntity{
 	private String size;
 	private String pcs;
 	private Double bruttoWeight = 0.0;
-	
+
 	private String creationDate;
 	private String deliveryDate;
 	private String termsDelivery;
@@ -65,18 +65,19 @@ public class InvoiceEntity extends BaseEntity{
 	private String pvn;
 	private String pvnSpecify;
 	private String hsCode;
-	
+
 	private Double amount = 0.0;
+	private Double stockAmount = 0.0;
 	private Double vat;
 	private Double totalAmount = 0.0;
 	private Date created;
-	
+
 	private String createdBy;
 
     @Transient
     private Integer shippedProductCount = 0;
-	
-	
+
+
 	public Long getNumber() {
 		return number;
 	}
@@ -226,6 +227,12 @@ public class InvoiceEntity extends BaseEntity{
 	}
 	public void setAmount(Double amount) {
 		this.amount = amount;
+	}
+	public Double getStockAmount() {
+		return stockAmount;
+	}
+	public void setStockAmount(Double stockAmount) {
+		this.stockAmount = stockAmount;
 	}
 	public Double getVat() {
 		return vat;

@@ -34,13 +34,13 @@ public class MainServiceImpl implements MainService {
 	}
 
 	public void saveNewPerson(String person) {
-		if(!personDao.checkIfPersonExists(person)) {
+		if( person != null && person != "" && !personDao.checkIfPersonExists(person)) {
 			PersonEntity p = new PersonEntity();
 			p.setName(person);
-			personDao.save(p);		
+			personDao.save(p);
 		}
 	}
-	
+
 	public void saveNewProducts(List<Product> products) {
 		for(Product p: products) {
 			if(productDao.getProduct(p.getPno()) == null) {
@@ -55,26 +55,26 @@ public class MainServiceImpl implements MainService {
 	public CompanyEntity getCompanyByName(String company) {
 		return companyDao.getCompany(company);
 	}
-	
+
 	public CompanyEntity getCompanyByAddress(String address) {
 		return companyDao.getCompanyByAddress(address);
 	}
-	
+
 	public String getCompanyAddress(String company) {
 		CompanyEntity c = companyDao.getCompany(company);
 		if(c == null)
 			return null;
 		return c.getAddress();
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
+
 	public ProductDao getProductDao() {
 		return productDao;
 	}
@@ -91,5 +91,5 @@ public class MainServiceImpl implements MainService {
 		this.personDao = personDao;
 	}
 
-	
+
 }

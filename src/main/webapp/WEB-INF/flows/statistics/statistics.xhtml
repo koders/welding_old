@@ -31,13 +31,13 @@
 
                         <div class="row">
                             <ui:repeat var="c0" value="#{administrationBean.getProductMaterials()}">
-                                <div class="col-md-5" style="margin: 20px 20px 0px 0px;">
+                                <div class="col-md-5" style="margin: 20px #{administrationBean.getTableMargin(c0.name)}px 0px 0px;">
                                     <h3 style="text-align: center;">#{c0.name}</h3>
                                     <table class="table table-striped table-hover table-bordered table-condensed">
                                         <thead>
                                             <tr>
                                                 <td></td>
-                                                <ui:repeat var="c" value="#{administrationBean.getProductModels()}">
+                                                <ui:repeat var="c" value="#{administrationBean.getProductModels(c0.name)}">
                                                     <td><strong>#{c.name}</strong></td>
                                                 </ui:repeat>
                                                 <td><strong>Total</strong></td>
@@ -47,7 +47,7 @@
                                             <ui:repeat var="c" value="#{administrationBean.getProductSizes()}">
                                                 <tr>
                                                     <td><strong>#{c.name}</strong></td>
-                                                    <ui:repeat var="c1" value="#{administrationBean.getProductModels()}">
+                                                    <ui:repeat var="c1" value="#{administrationBean.getProductModels(c0.name)}">
                                                         <td>#{statisticsBean.getProductCountFromCache(c1, c, c0)}</td>
                                                     </ui:repeat>
                                                     <td class="info">#{statisticsBean.totalProductCountForSize(c, c0)}</td>
@@ -55,7 +55,7 @@
                                             </ui:repeat>
                                             <tr>
                                                 <td><strong>Total</strong></td>
-                                                    <ui:repeat var="c1" value="#{administrationBean.getProductModels()}">
+                                                    <ui:repeat var="c1" value="#{administrationBean.getProductModels(c0.name)}">
                                                         <td class="info">#{statisticsBean.totalProductCountForModel(c1, c0)}</td>
                                                     </ui:repeat>
                                                 <td class="warning"><strong>#{statisticsBean.totalProductCountForMaterial(c0)}</strong></td>

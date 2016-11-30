@@ -24,16 +24,16 @@ import com.google.gson.Gson;
 
 
 public class InvoiceDTO {
-	
+
 	private Gson gson = new Gson();
 	private InvoiceDao invoiceDao;
 	private OrderDao orderDao;
 	private CompanyDao companyDao;
 	private ProductDao productDao;
 	private UserDTO userDto;
-	
+
 	private MainService service;
-	
+
 	private List<InvoiceEntity> invoices;
 	private List<CountryEntity> countries;
 	@SuppressWarnings("unused")
@@ -52,7 +52,7 @@ public class InvoiceDTO {
 	private InvoiceEntity invoiceToDelete;
 	private DualListModel<String> months;
     private String category;
-	
+
 	private boolean edit;
 	private boolean c1;
 	private boolean c2;
@@ -62,24 +62,24 @@ public class InvoiceDTO {
     private String packingListTotalPages;
     private boolean packingListGenerated = false;
 
-	
-	
-	
+
+
+
 	public String compressedText(String string, int symbols) {
 		if(string.length() <= 50) return string;
 		return string.substring(0,symbols) + "...";
 	}
-	
+
 	public void reset() {
 		setInvoice(new InvoiceEntity());
 		setOrder(new OrderEntity());
 		setProducts(new ArrayList<Product>());
 		setEdit(false);
-		
+
 		invoice.setNumber(getNextNumber());
 		invoice.setYear(getYear());
 	}
-	
+
 	public BigDecimal setScale(Double number, int scale) {
 		return new BigDecimal(number).setScale(scale, RoundingMode.HALF_UP);
 	}
@@ -89,7 +89,7 @@ public class InvoiceDTO {
 		List<InvoiceDataTableModel> results = new ArrayList<InvoiceDataTableModel>();
 		if(invoices.isEmpty())
 			return results;
-		
+
 		if(country == null || country.equals("") || country.equalsIgnoreCase("All Invoices")) {
             results.addAll(convertInvoicesToTableModel(invoices));
 		}
@@ -127,7 +127,7 @@ public class InvoiceDTO {
         }
         return results;
     }
-	
+
 	public List<InvoiceDataTableModel> getInvoicesForReport(List<String> months) {
 		getInvoices();
 		List<InvoiceDataTableModel> results = new ArrayList<InvoiceDataTableModel>();
@@ -160,13 +160,13 @@ public class InvoiceDTO {
         }
         return results;
     }
-	
+
 	public String replaceNewlines(String s) {
 		s = s.replace("\n","<br />");
 		s = s.replace("\\n","<br />");
 		return s;
 	}
-	
+
 	public List<CompanyEntity> completeCompany(String company) {
 		if(company == null || company == "")
 			return null;
@@ -179,13 +179,13 @@ public class InvoiceDTO {
 		}
 		return results;
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	public Long getYear() {
 		Date d = new Date();
 		return (long)d.getYear() + 1900;
 	}
-	
+
 	public Long getNextNumber() {
 		if(invoices == null || invoices.isEmpty())
 			return 1L;
@@ -195,7 +195,7 @@ public class InvoiceDTO {
 		else
 			return 1L;
 	}
-	
+
 	public void orderSelected() {
 		setProducts(getOrder().getOrderData().getP());
 		setDataFromOrder();
@@ -205,24 +205,24 @@ public class InvoiceDTO {
 	public void detachOrder() {
 		setOrder(new OrderEntity());
 	}
-	
+
 	public void resetOrderData() {
 		setOrder(new OrderEntity());
 		setProducts(new ArrayList<Product>());
 	}
-	
+
 	public void addProduct() {
 		products.add(new Product());
 	}
-	
+
 	public void removeProduct(Product product) {
 		products.remove(product);
 		editPrice();
 	}
-	
+
 	public void editPrice(){
 		getInvoice().setAmount(0.0);
-		
+
 		for(Product p: getProducts()) {
 			try {
 				Double.parseDouble(p.getPrice());
@@ -235,19 +235,19 @@ public class InvoiceDTO {
 	}
 
     public void editPriceByInvoice(InvoiceEntity invoice){
-        invoice.setAmount(0.0);
+        invoice.setStockAmount(0.0);
 
         for(Product p: invoice.getProductData()) {
             try {
-                Double.parseDouble(p.getPrice());
+                Double.parseDouble(p.getStockPrice());
                 Double.parseDouble(p.getPcs());
             } catch (Exception e) {
                 continue;
             }
-            invoice.setAmount(invoice.getAmount() + Double.parseDouble(p.getStockPrice()) * Double.parseDouble(p.getPcs()));
+            invoice.setStockAmount(invoice.getStockAmount() + Double.parseDouble(p.getStockPrice()) * Double.parseDouble(p.getPcs()));
         }
     }
-	
+
 	public String validateInvoice() {
 		StringBuilder error = new StringBuilder();
 		if(getInvoice().getSellerInfo() == null || getInvoice().getSellerInfo().getName() == null)
@@ -270,7 +270,7 @@ public class InvoiceDTO {
 			error.append("VAT directive must not be empty\n");
 		return error.toString();
 	}
-	
+
 	public void save() {
 		String error = validateInvoice();
 		if(!error.isEmpty()) {
@@ -311,7 +311,7 @@ public class InvoiceDTO {
 		setInvoiceForEdit(invoice);
         setEdit(true);
 	}
-	
+
 	public void setData() {
 		if(invoice.getSellerInfo() != null)
 			invoice.setSellerInfo(getCompanyData(invoice.getSellerInfo().getName()));
@@ -335,7 +335,7 @@ public class InvoiceDTO {
 		//invoice.setPvnSpecify(convertSymbols(invoice.getPvnSpecify()));
 		//invoice.setSpecification(convertSymbols(invoice.getSpecification()));
 	}
-	
+
 	public void setDataFromOrder() {
 		//invoice.getDeliveryInfo().setAddress(trimOrderAddress(order.getOrderData().getDaddres()));
     invoice.setDelivery(gson.toJson(invoice.getDeliveryInfo()));
@@ -344,7 +344,7 @@ public class InvoiceDTO {
 		invoice.setCurrency(getOrder().getOrderData().getCurrency());
 		invoice.setRef(getOrder().getOrderData().getCperson());
 	}
-	
+
 	public void saveEdited() {
 		setData();
 		if(getOrder().getOrderData().getOcnr() != null) {
@@ -366,17 +366,17 @@ public class InvoiceDTO {
     }
 
     public void recalculateStockAmount(InvoiceEntity stockInvoice) {
-        stockInvoice.setAmount(0.00);
+        stockInvoice.setStockAmount(0.00);
         for(Product p : stockInvoice.getProductData()) {
-            stockInvoice.setAmount(stockInvoice.getAmount() + Double.parseDouble(p.getStockPrice()) * Double.parseDouble(p.getPcs()));
+            stockInvoice.setStockAmount(stockInvoice.getStockAmount() + Double.parseDouble(p.getStockPrice()) * Double.parseDouble(p.getPcs()));
         }
     }
-	
+
 	public void delete() {
 		invoiceDao.delete(invoiceToDelete);
 		Utils.msg("Invoice successfully deleted!");
 	}
-	
+
 	public void setInvoiceForEdit(InvoiceEntity invoice) {
 		resetOrderData();
 		if(invoice == null) {
@@ -389,7 +389,7 @@ public class InvoiceDTO {
 		setProducts(new ArrayList<Product>(invoice.getProductData()));
 		edit = true;
 	}
-	
+
 	public Double calculateTotalWeight(Product p) {
 		try {
 			Double a = Double.parseDouble(p.getWeight());
@@ -399,14 +399,14 @@ public class InvoiceDTO {
 			return 0.0;
 		}
 	}
-	
+
 	public void calculateNettoWeight() {
 		getInvoice().setNettoWeight(0.0);
 		for(Product p: getProducts()) {
 			getInvoice().setNettoWeight(getInvoice().getNettoWeight() + calculateTotalWeight(p));
 		}
 	}
-	
+
 	public void calculateBruttoWeight() {
 		calculateNettoWeight();
 		Double add = 0.0;
@@ -433,7 +433,26 @@ public class InvoiceDTO {
             add += getInvoice().getOtherWeight();
         getInvoice().setBruttoWeight(getInvoice().getNettoWeight() + add);
     }
-	
+
+
+				public BigDecimal calculateTotalAmount(InvoiceEntity invoice) {
+					BigDecimal sum = new BigDecimal(0);
+					if(invoice == null || invoice.getProductData() == null) {
+						return sum;
+					}
+					for(Product p : invoice.getProductData()) {
+						try {
+							BigDecimal currentSum = calculatePrice(p) ;
+							if( currentSum != null ){
+								sum.add(currentSum);
+							}
+						} catch(Exception e){
+								System.out.print(e);
+						}
+					}
+					return sum;
+				}
+
 	public BigDecimal calculatePrice(Product product) {
 		if(product == null || product.getPcs() == null || product.getPrice() == null || product.getPcs().equals("") || product.getPrice().equals(""))
 			return new BigDecimal(0.00);
@@ -463,7 +482,7 @@ public class InvoiceDTO {
 		}
 		return null;
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	public void resetMonths() {
 		List<String> newMonths = new ArrayList<String>();
@@ -479,7 +498,7 @@ public class InvoiceDTO {
 		}
 		setMonths(new DualListModel<String>(newMonths, new ArrayList<String>()));
 	}
-	
+
 	public String getMonthFromInvoice(InvoiceEntity invoice) {
 		return invoice.getDeliveryDate().substring(3);
 	}
@@ -554,7 +573,7 @@ public class InvoiceDTO {
 	public CompanyEntity getCompanyData(String name) {
 		return companyDao.getCompany(name);
 	}
-	
+
 	public List<InvoiceEntity> getInvoices() {
 		invoices = invoiceDao.getInvoices();
 		for(InvoiceEntity i: invoices) {
@@ -611,7 +630,7 @@ public class InvoiceDTO {
 			OrderData order = gson.fromJson(o.getData(),OrderData.class);
 			o.setOrderData(order);
 		}
-		
+
 		Collections.sort(orders,new Comparator<OrderEntity>() {
 			public int compare(OrderEntity x1, OrderEntity x2) {
 				if(x2.getOrderData() == null || x2.getOrderData().getOcnr() == null || x1.getOrderData() == null)
@@ -763,7 +782,7 @@ public class InvoiceDTO {
 	public void setSaveAction(String saveAction) {
 		this.saveAction = saveAction;
 	}
-	
+
 	public String saveAction() {
 		return getSaveAction();
 	}

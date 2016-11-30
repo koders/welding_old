@@ -25,7 +25,7 @@ public class AdministrationDTO {
 	private ProductMaterialDao productMaterialDao;
 
 	private UserService userService;
-	
+
 	private List<TermsEntity> allTerms;
 	private List<ProductEntity> products;
 	private List<UserEntity> users;
@@ -41,7 +41,7 @@ public class AdministrationDTO {
     private List<CategoryEntity> selectedCategories;
     private CategoryModel categoryModel;
 
-	
+
 	private TermsEntity terms = new TermsEntity();
 	private ProductEntity product = new ProductEntity();
 	private UserEntity user = new UserEntity();
@@ -70,7 +70,7 @@ public class AdministrationDTO {
 		FacesContext.getCurrentInstance().addMessage(null,
                 new FacesMessage(message));
 	}
-	
+
 	public void clearFields() {
 		terms = new TermsEntity();
 		product = new ProductEntity();
@@ -92,7 +92,7 @@ public class AdministrationDTO {
 
         edit = false;
 	}
-	
+
 	public void redirectTo(String url) {
 		try {
 			FacesContext.getCurrentInstance().getExternalContext().redirect("/welding/app/" + url);
@@ -100,30 +100,30 @@ public class AdministrationDTO {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void failSave(String message) {
 		msg(message);
 		clearFields();
 	}
-	
-	
+
+
 	//-------------------------- USERS --------------------------------------
-	
-	
+
+
 	public void addNewUser() {
-		
+
 		try {
 			userService.createUserIfNotExist(user);
 			msg("User " + user.getUsername() +" successfully created!");
 			clearFields();
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			msg(e.getMessage());
 		}
 }
-	
-	
+
+
 	public void deleteUser() {
 		try {
 			userService.deleteUser(user);
@@ -133,12 +133,12 @@ public class AdministrationDTO {
 			e.printStackTrace();
 		}
 	}
-	
-	
-	
+
+
+
 	//-------------------------- COMPANIES ----------------------------------
-	
-	
+
+
 	public void saveCompany() {
 		if(edit) {
 			saveEditedCompany();
@@ -158,18 +158,18 @@ public class AdministrationDTO {
 		msg("Company successfully created!");
 		clearFields();
 	}
-	
+
 	public void saveEditedCompany() {
 		companyDao.update(company);
 		msg("Company successfully updated!");
 		clearFields();
 	}
-	
+
 	public void deleteCompany() {
 		companyDao.delete(company);
 		msg("Company successfully deleted!");
 	}
-	
+
 	public void setCompanyForEdit(CompanyEntity c) {
 		setCompany(c);
 		edit = true;
@@ -177,58 +177,58 @@ public class AdministrationDTO {
 
 
 	//-------------------------- TERMS ------------------------------------
-	
-	
-	
+
+
+
 	public void saveTerms() {
 		if(edit) {
 			saveEditedTerms();
 			return;
 		}
 		if(termsDao.getTerms(terms.getTerms()) != null) {
-			failSave("Terms already in database."); 
+			failSave("Terms already in database.");
 			return;
 		}
 		termsDao.save(terms);
 		msg("Delivery Terms successfully created!");
 		clearFields();
 	}
-	
+
 	public void saveEditedTerms() {
 		termsDao.update(terms);
 		msg("Delivery Terms successfully updated!");
 		clearFields();
 	}
-	
+
 	public void deleteTerms() {
 		termsDao.delete(terms);
 		msg("Delivery Terms successfully deleted!");
 		clearFields();
 	}
-	
+
 	public void setTermsForEdit(TermsEntity t) {
 		setTerms(t);
 		edit = true;
-	} 
-	
+	}
+
 	public List<String> completeTerms(String query) {
 		getAllTerms();
         List<String> filteredTerms = new ArrayList<String>();
-        
+
         for(TermsEntity t: allTerms) {
         	if(t.getTerms().toUpperCase().contains(query.toUpperCase()))
         		filteredTerms.add(t.getTerms());
         }
-        
+
         return filteredTerms;
 	}
-	
-	
-	
-	
+
+
+
+
 	//-------------------------- PRODUCTS ------------------------------------
-	
-	
+
+
 	public void saveProduct() {
 		if(edit) {
 			saveEditedProduct();
@@ -242,30 +242,30 @@ public class AdministrationDTO {
 		clearFields();
 		msg("Product successfully created!");
 	}
-	
+
 	public void saveEditedProduct() {
 		productDao.update(product);
 		clearFields();
 		msg("Product successfully edited!");
 	}
-	
+
 	public void deleteProduct() {
 		productDao.delete(product);
 		clearFields();
 		msg("Product successfully deleted!");
 	}
-	
+
 	public void setProductForEdit(ProductEntity p) {
 		setProduct(p);
 		edit = true;
 	}
-	
-	
-	
+
+
+
 	//-------------------------- COUNTRIES ------------------------------------
-	
-	
-	
+
+
+
 	public void saveCountry() {
 		if(edit) {
 			saveEditedCountry();
@@ -279,30 +279,30 @@ public class AdministrationDTO {
 		clearFields();
 		msg("Country successfully created!");
 	}
-	
+
 	public void saveEditedCountry() {
 		countryDao.update(country);
 		clearFields();
 		msg("Country successfully edited!");
 	}
-	
+
 	public void deleteCountry() {
 		countryDao.delete(country);
 		clearFields();
 		msg("Country successfully deleted!");
 	}
-	
+
 	public void setCountryForEdit(CountryEntity c) {
 		setCountry(c);
 		edit = true;
 	}
-	
-	
-	
-	
-	
+
+
+
+
+
 	//-------------------------- PERSONS ------------------------------------
-	
+
 	public void savePerson() {
 		if(edit) {
 			saveEditedPerson();
@@ -316,33 +316,33 @@ public class AdministrationDTO {
 		clearFields();
 		msg("Person successfully saved!");
 	}
-	
+
 	public void saveEditedPerson() {
 		personDao.update(person);
 		clearFields();
 		msg("Person successfully edited!");
 	}
-	
+
 	public void deletePerson() {
 		personDao.delete(person);
 		clearFields();
 		msg("Person successfully deleted!");
 	}
-	
+
 	public void setPersonForEdit(PersonEntity p) {
 		setPerson(p);
 		edit = true;
 	}
-	
+
 	public List<String> completePerson(String query) {
 		getPersons();
         List<String> filteredPersons = new ArrayList<String>();
-        
+
         for(PersonEntity t: persons) {
         	if(t.getName().toLowerCase().contains(query.toLowerCase()))
         		filteredPersons.add(t.getName());
         }
-        
+
         return filteredPersons;
 	}
 
@@ -782,13 +782,13 @@ public class AdministrationDTO {
 		}
 	}
 
-	
-	
-	
+
+
+
 	//--------------------------------- Getters and Setters ------------------------------------------------------------
-	
-	
-	
+
+
+
 	public List<TermsEntity> getAllTerms() {
 		setAllTerms(termsDao.getAllTerms());
 		return allTerms;
@@ -1103,6 +1103,36 @@ public class AdministrationDTO {
 
 	public List<ProductModelEntity> getProductModels() {
 		return productModelDao.getAllProductModels();
+	}
+
+	public List<ProductModelEntity> getProductModels(String name) {
+		List<ProductModelEntity> allModels = productModelDao.getAllProductModels();
+		List<ProductModelEntity> resultModels = new ArrayList<ProductModelEntity>();
+		Boolean toAdd = true;
+		if( ("Spare parts").equals(name) || ("Hide spare parts").equals(name) ) {
+			toAdd = false;
+		}
+		for(ProductModelEntity model : allModels) {
+			if( !("Spare parts").equals(name) && !("Hide spare parts").equals(name) && ("Floats").equals(model.getName()) ) {
+				toAdd = false;
+			}
+			if( (("Spare parts").equals(name) || ("Hide spare parts").equals(name)) && ("Floats").equals(model.getName()) ) {
+				toAdd = true;
+			}
+			if(toAdd) {
+				resultModels.add(model);
+			}
+		}
+		return resultModels;
+	}
+
+	public String getTableMargin(String name) {
+		if( ("Spare parts").equals(name) || ("Hide spare parts").equals(name) ) {
+			return "180";
+		}
+		else {
+			return "30";
+		}
 	}
 
 	public List<ProductSizeEntity> getProductSizes() {
